@@ -68,6 +68,7 @@ function selectPanel(index) {
     // Hide all panels first
     panels.forEach(panel => {
         panel.style.display = 'none';
+        panel.style.order = 0; // Reset order
     });
     
     // BMW iD6 shows 3 panels at a time with the selected one in the middle
@@ -75,17 +76,21 @@ function selectPanel(index) {
     const prevIndex = (currentPanelIndex - 1 + panels.length) % panels.length;
     const nextIndex = (currentPanelIndex + 1) % panels.length;
     
-    // Show only these 3 panels
+    // Show only these 3 panels and set their order for proper layout
     panels[prevIndex].style.display = 'flex';
-    panels[currentPanelIndex].style.display = 'flex';
-    panels[nextIndex].style.display = 'flex';
+    panels[prevIndex].style.order = '1';
     
-    // Scroll to the selected panel with smooth animation
-    panels[currentPanelIndex].scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'nearest',
-        inline: 'center'
-    });
+    panels[currentPanelIndex].style.display = 'flex';
+    panels[currentPanelIndex].style.order = '2';
+    
+    panels[nextIndex].style.display = 'flex';
+    panels[nextIndex].style.order = '3';
+    
+    // Update red arrow visibility - show only if there are more than 3 panels
+    const redArrow = document.querySelector('.red-arrow');
+    if (redArrow) {
+        redArrow.style.opacity = panels.length > 3 ? '1' : '0';
+    }
 }
 
 // Handle keyboard navigation to simulate the iDrive controller
