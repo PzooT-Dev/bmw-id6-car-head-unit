@@ -89,18 +89,22 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
         
-        /* BMW iDrive selected tile style with red header */
+        /* BMW iDrive selected tile style - matches original iD6 */
         .panel.selected {
-            border: 1px solid rgba(230, 59, 59, 0.3);
-            box-shadow: 0 0 20px rgba(230, 59, 59, 0.3);
-            transform: scale(1.02);
+            border: 1px solid #222;
+            transform: scale(1.01);
             z-index: 10;
             transition: all 0.3s ease;
         }
         
+        /* Red header for selected panel - matches original iD6 */
         .panel.selected .panel-header {
-            background-color: #e63b3b !important;
-            border-bottom: none;
+            background: #e63b3b; /* BMW red background color */
+            color: white;
+        }
+        
+        .panel.selected .panel-title {
+            color: white;
         }
         
         .panel-header {
@@ -181,11 +185,34 @@
             margin-left: auto;
         }
         
-        /* Communication panel specifics */
+        /* Communication panel specifics - Like original BMW iD6 */
+        .comm-panel .date-display {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .comm-panel .date-number {
+            font-size: 48px;
+            font-weight: 500;
+            margin-right: 15px;
+            line-height: 1;
+        }
+        
+        .comm-panel .date-text {
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
+            color: #ccc;
+        }
+        
         .comm-panel .device-info {
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
         }
         
         .comm-panel .device-name {
@@ -232,26 +259,29 @@
             color: #aaa;
         }
         
-        /* Vehicle panel specifics */
+        /* Vehicle panel specifics - Matches original BMW iD6 */
         .vehicle-panel .stats {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         
         .vehicle-panel .stat-row {
             display: flex;
             align-items: center;
+            font-size: 16px;
         }
         
         .vehicle-panel .stat-icon {
             width: 30px;
             color: #aaa;
+            margin-right: 10px;
         }
         
         .vehicle-panel .stat-value {
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 18px;
         }
         
         .vehicle-panel .car-image {
@@ -259,13 +289,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-top: 10px;
         }
         
-        .vehicle-panel .car-icon {
-            font-size: 54px;
-            color: #fff;
-            margin-top: 20px;
-            filter: brightness(1.2);
+        .vehicle-panel .bmw-car-img {
+            width: 90%;
+            max-height: 80px;
+            object-fit: contain;
+            filter: brightness(1.1);
         }
         
         /* Navigation panel specifics */
@@ -388,20 +419,24 @@
                     <div class="panel-title">☎ Communication</div>
                 </div>
                 <div class="panel-content">
-                    <div class="device-info">
-                        <div class="device-name">System Status</div>
-                        <div class="battery">●</div>
+                    <!-- BMW iD6-style date display like the reference image -->
+                    <div class="date-display">
+                        <div class="date-number">{{ time.split(':')[0] }}</div>
+                        <div class="date-text">
+                            <div>April</div>
+                            <div>2025</div>
+                        </div>
                     </div>
                     
-                    <!-- Weather Widget -->
-                    <div class="weather-widget">
-                        <div class="weather-icon">☀️</div>
-                        <div class="temperature">{{ outside_temp }}°C</div>
-                        <div class="location">Current Location</div>
+                    <div class="device-info">
+                        <div class="device-name">HU-MGU</div>
+                        <div class="battery">
+                            <span class="battery-icon">🔋</span>
+                        </div>
                     </div>
                     
                     <div class="placeholder">
-                        <div>No active connections</div>
+                        <div>Bluetooth ready</div>
                     </div>
                 </div>
             </div>
@@ -412,19 +447,20 @@
                     <div class="panel-title">🚘 My Vehicle</div>
                 </div>
                 <div class="panel-content">
+                    <!-- Following exact BMW iD6 reference image format -->
                     <div class="stats">
                         <div class="stat-row">
-                            <div class="stat-icon">⚡</div>
-                            <div class="stat-value">{{ vehicle_data.avg_mpg }} mpg</div>
+                            <div class="stat-icon">⛽</div>
+                            <div class="stat-value">12.0 l/100km</div>
                         </div>
                         <div class="stat-row">
                             <div class="stat-icon">⏱</div>
-                            <div class="stat-value">{{ vehicle_data.avg_speed }} mph</div>
+                            <div class="stat-value">25.2 km/h</div>
                         </div>
                     </div>
                     <div class="car-image">
-                        <!-- White car icon -->
-                        <div class="car-icon">🚙</div>
+                        <!-- BMW X5 car image placeholder -->
+                        <img src="{{ url_for('static', filename='images/bmw_x5_white.png') }}" class="bmw-car-img" onerror="this.src='https://i.ibb.co/KqJZpBY/bmw-x5-silhouette.png'; this.onerror='';">
                     </div>
                 </div>
             </div>
