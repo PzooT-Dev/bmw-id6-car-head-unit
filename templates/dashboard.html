@@ -340,19 +340,61 @@
             color: #555;
         }
         
-        .comm-panel .phone-instructions {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 30px;
-            padding: 20px;
-            background-color: rgba(28, 105, 212, 0.1);
-            border-radius: 10px;
+        .comm-panel .battery-level {
+            margin-left: 4px;
             color: #ddd;
-            font-size: 16px;
-            font-style: italic;
-            text-align: center;
-            border: 1px dashed rgba(28, 105, 212, 0.3);
+            font-size: 13px;
+        }
+
+        .comm-panel .recent-calls {
+            margin-top: 20px;
+        }
+        
+        .comm-panel .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #1c69d4;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(28, 105, 212, 0.3);
+        }
+        
+        .comm-panel .call-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .comm-panel .call-item {
+            padding: 8px 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .comm-panel .call-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .comm-panel .call-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-size: 12px;
+        }
+        
+        .comm-panel .call-time {
+            color: #aaa;
+        }
+        
+        .comm-panel .call-type {
+            color: #1c69d4;
+            font-size: 11px;
         }
         
         /* General style improvements for all panels to match BMW iD6 */
@@ -597,11 +639,28 @@
                             <div class="device-name">Pixel 7 Pro</div>
                             <div class="battery">
                                 <span class="battery-icon">🔋</span>
+                                <span class="battery-level">85%</span>
                             </div>
                         </div>
-                        
-                        <div class="phone-instructions">
-                            Press Enter to access phone features
+
+                        <div class="recent-calls">
+                            <div class="section-title">Recent Calls</div>
+                            <div class="call-list">
+                                <div class="call-item">
+                                    <div class="call-name">John Smith</div>
+                                    <div class="call-details">
+                                        <span class="call-time">Yesterday</span>
+                                        <span class="call-type">Incoming</span>
+                                    </div>
+                                </div>
+                                <div class="call-item">
+                                    <div class="call-name">Service Center</div>
+                                    <div class="call-details">
+                                        <span class="call-time">Apr 18</span>
+                                        <span class="call-type">Outgoing</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
