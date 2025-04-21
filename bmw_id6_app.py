@@ -44,9 +44,10 @@ class BMWID6App(App):
         # UI components
         self.screen_manager = None
         
-        # Configure fullscreen for Raspberry Pi
-        Window.fullscreen = 'auto'
-        Window.show_cursor = False  # Hide cursor for touch interface
+        # Configure window for simulation environment
+        Window.size = (800, 480)  # Common Raspberry Pi touchscreen resolution
+        Window.clearcolor = (0, 0, 0, 1)  # Black background
+        Window.show_cursor = True  # Show cursor for desktop testing
         
     def build(self):
         """Build and return the app's UI root widget."""

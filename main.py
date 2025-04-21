@@ -9,7 +9,6 @@ Main entry point for the application.
 import os
 import sys
 import logging
-from kivy.resources import resource_add_path
 
 # Configure logging
 logging.basicConfig(
@@ -23,18 +22,23 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
-    # Add the current directory to the path so we can run the app from any location
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    resource_add_path(current_dir)
-    
-    # Some environment setup for Raspberry Pi
-    os.environ['KIVY_GL_BACKEND'] = 'gl'
-    os.environ['KIVY_WINDOW'] = 'egl_rpi'
-    
+    # Using the web application implementation
+    # This approach works better in environments like Replit
+    # where graphics support for Kivy can be challenging
     try:
-        from bmw_id6_app import BMWID6App
-        app = BMWID6App()
-        app.run()
+        logger.info("Starting BMW iD6-style Car Head Unit (Web Edition)")
+        
+        # Create directories if they don't exist
+        if not os.path.exists('templates'):
+            os.makedirs('templates')
+        
+        if not os.path.exists('static'):
+            os.makedirs('static')
+            
+        # Import and start the Flask web application
+        from web_app import app, socketio
+        socketio.run(app, host='0.0.0.0', port=5000, debug=True, use_reloader=False, log_output=True)
+        
     except Exception as e:
         logger.exception(f"Failed to start application: {e}")
         sys.exit(1)

@@ -50,34 +50,34 @@ class CANInterface:
             logger.warning("CAN interface already running")
             return
             
-        logger.info(f"Starting CAN interface on channel {self.channel}")
+        logger.info(f"Starting CAN interface in simulation mode")
         
         try:
-            # Try to set up the interface if on Linux
-            if os.name == 'posix':
-                os.system(f"sudo ip link set {self.channel} type can bitrate {self.bitrate}")
-                os.system(f"sudo ifconfig {self.channel} up")
-                
-            # Initialize the CAN bus
-            self.bus = can.interface.Bus(
-                channel=self.channel,
-                bustype='socketcan',
-                bitrate=self.bitrate
-            )
-            
+            # For testing/simulation, we'll run in simulation mode
+            # without actual CAN hardware
             self.running = True
             self.connected = True
             self.last_received = time.time()
             
-            # Start the CAN reading thread
-            self.thread = threading.Thread(target=self._read_can_messages)
+            # Set initial simulated vehicle data
+            self.vehicle_data = {
+                'speed': 45,
+                'rpm': 1500,
+                'fuel_level': 75,
+                'coolant_temp': 90,
+                'outside_temp': 22,
+                'engine_on': True
+            }
+            
+            # Start the simulation thread
+            self.thread = threading.Thread(target=self._simulate_can_messages)
             self.thread.daemon = True
             self.thread.start()
             
-            logger.info("CAN interface started successfully")
+            logger.info("CAN interface simulation started successfully")
             
         except Exception as e:
-            logger.error(f"Error starting CAN interface: {e}")
+            logger.error(f"Error starting CAN interface simulation: {e}")
             self.connected = False
     
     def stop(self):
@@ -138,6 +138,45 @@ class CANInterface:
                 logger.error(f"Error reading CAN message: {e}")
                 self.connected = False
                 time.sleep(1.0)  # Wait before retrying
+                
+    def _simulate_can_messages(self):
+        """Thread function to simulate CAN messages for testing."""
+        import random
+        
+        while self.running:
+            try:
+                # Update the timestamp for connection status
+                self.last_received = time.time()
+                
+                # Simulate speed changes (with some randomness)
+                self.vehicle_data['speed'] += random.randint(-3, 3)
+                self.vehicle_data['speed'] = max(0, min(120, self.vehicle_data['speed']))
+                
+                # Simulate RPM changes based on speed
+                target_rpm = self.vehicle_data['speed'] * 30 + 800  # Simplified RPM calculation
+                self.vehicle_data['rpm'] += (target_rpm - self.vehicle_data['rpm']) // 10
+                self.vehicle_data['rpm'] = max(800, min(6000, self.vehicle_data['rpm']))
+                
+                # Gradually decrease fuel level
+                if random.random() < 0.01:  # 1% chance per iteration
+                    self.vehicle_data['fuel_level'] -= 0.1
+                    self.vehicle_data['fuel_level'] = max(0, self.vehicle_data['fuel_level'])
+                
+                # Simulate coolant temperature fluctuations
+                self.vehicle_data['coolant_temp'] += random.randint(-1, 1)
+                self.vehicle_data['coolant_temp'] = max(80, min(105, self.vehicle_data['coolant_temp']))
+                
+                # Simulate outside temperature changes
+                if random.random() < 0.05:  # 5% chance per iteration
+                    self.vehicle_data['outside_temp'] += random.uniform(-0.1, 0.1)
+                    self.vehicle_data['outside_temp'] = round(self.vehicle_data['outside_temp'], 1)
+                
+                # Sleep to simulate update rate
+                time.sleep(0.2)
+                
+            except Exception as e:
+                logger.error(f"Error in CAN simulation: {e}")
+                time.sleep(1.0)
     
     def _process_can_message(self, message):
         """
@@ -202,12 +241,17 @@ class CANInterface:
             return False
             
         try:
-            message = can.Message(
-                arbitration_id=arb_id,
-                data=data,
-                is_extended_id=False
-            )
-            self.bus.send(message)
+            # In simulation mode, just log the message
+            logger.info(f"Simulation: CAN message sent with ID: 0x{arb_id:x}, data: {data.hex() if data else 'None'}")
+            
+            # In real mode with hardware, this would be:
+            # message = can.Message(
+            #     arbitration_id=arb_id,
+            #     data=data,
+            #     is_extended_id=False
+            # )
+            # self.bus.send(message)
+            
             return True
         except Exception as e:
             logger.error(f"Error sending CAN message: {e}")

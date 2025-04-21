@@ -45,18 +45,29 @@ class RadioService:
             logger.warning("Radio service already running")
             return
             
-        logger.info("Starting radio service")
+        logger.info("Starting radio service in simulation mode")
         
         try:
             self.running = True
             self.active = True
             
-            # Start the radio thread
+            # For simulation mode, set up some initial values
+            if self.mode == RadioMode.FM:
+                self.current_station = "Simulation Radio 1"
+                self.frequency = 98.8
+                self.rds_text = "Welcome to Simulation FM Radio"
+            else:
+                self.current_station = "DAB Simulation 1"
+                self.rds_text = "Digital Radio Simulation"
+                
+            self.signal_strength = 85  # Simulate good signal
+            
+            # Start the radio simulation thread
             self.thread = threading.Thread(target=self._radio_thread)
             self.thread.daemon = True
             self.thread.start()
             
-            logger.info("Radio service started successfully")
+            logger.info("Radio service simulation started successfully")
             
         except Exception as e:
             logger.error(f"Error starting radio service: {e}")

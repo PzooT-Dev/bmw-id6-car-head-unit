@@ -28,13 +28,18 @@ class AudioManager:
         self.playing = False
         self.current_stream = None
         self.pyaudio_instance = None
+        self.simulation_mode = True  # Run in simulation mode without actual audio hardware
         
         try:
-            # Initialize PyAudio
-            self.pyaudio_instance = pyaudio.PyAudio()
-            logger.info("Audio manager initialized")
+            if not self.simulation_mode:
+                # Initialize PyAudio only if not in simulation mode
+                self.pyaudio_instance = pyaudio.PyAudio()
+                logger.info("Audio manager initialized with PyAudio")
+            else:
+                logger.info("Audio manager initialized in simulation mode")
         except Exception as e:
             logger.error(f"Error initializing audio manager: {e}")
+            self.simulation_mode = True  # Fall back to simulation mode on error
     
     def play(self):
         """Play or resume audio."""
@@ -150,6 +155,13 @@ class AudioManager:
         self.stop()
         
         try:
+            if self.simulation_mode:
+                # In simulation mode, just simulate playback
+                logger.info(f"Simulation: Playing audio file: {file_path}")
+                self.playing = True
+                return True
+            
+            # Real playback for non-simulation mode
             if file_path.endswith('.wav'):
                 # Play WAV file using PyAudio
                 self._play_wav_file(file_path)
@@ -157,7 +169,7 @@ class AudioManager:
                 # For other formats, use aplay on Linux
                 if os.name == 'posix':
                     subprocess.Popen(['aplay', file_path], 
-                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 else:
                     logger.error("Unsupported audio format on this platform")
                     return False
@@ -204,11 +216,15 @@ class AudioManager:
         self.shutdown()
         
         try:
-            # Reinitialize PyAudio
-            self.pyaudio_instance = pyaudio.PyAudio()
-            logger.info("Audio manager restarted")
+            if not self.simulation_mode:
+                # Reinitialize PyAudio only if not in simulation mode
+                self.pyaudio_instance = pyaudio.PyAudio()
+                logger.info("Audio manager restarted with PyAudio")
+            else:
+                logger.info("Audio manager restarted in simulation mode")
         except Exception as e:
             logger.error(f"Error restarting audio manager: {e}")
+            self.simulation_mode = True  # Fall back to simulation mode on error
     
     def shutdown(self):
         """Shutdown the audio manager and clean up resources."""
