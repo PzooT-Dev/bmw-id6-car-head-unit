@@ -32,39 +32,71 @@
             position: relative;
         }
         
-        /* Status bar */
+        /* Status bar to match BMW iD6 reference */
         .status-bar {
             display: flex;
             justify-content: space-between;
             padding: 8px 15px;
             background: #000;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #181818;
         }
         
-        .status-bar .time {
-            font-weight: 500;
-        }
-        
-        .status-bar .signal {
+        .status-bar .left-items {
             display: flex;
-            gap: 10px;
+            align-items: center;
         }
         
-        .status-bar .nav-icons {
+        .status-bar .view-icon {
+            width: 24px;
+            height: 18px;
+            filter: brightness(0) invert(1); /* Make icon white */
+        }
+        
+        .status-bar .right-items {
             display: flex;
+            align-items: center;
             gap: 15px;
         }
         
-        .status-bar .nav-icon {
-            font-size: 20px;
-            color: #fff;
-            text-decoration: none;
-            transition: transform 0.2s;
+        .status-bar .signal-icon {
+            width: 20px;
+            height: 16px;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
         }
         
-        .status-bar .nav-icon:hover {
-            transform: scale(1.1);
-            color: #1c69d4;
+        .status-bar .signal-icon .bar {
+            width: 3px;
+            background-color: #fff;
+            border-radius: 1px 1px 0 0;
+        }
+        
+        .status-bar .signal-icon .bar-1 {
+            height: 4px;
+        }
+        
+        .status-bar .signal-icon .bar-2 {
+            height: 8px;
+        }
+        
+        .status-bar .signal-icon .bar-3 {
+            height: 12px;
+        }
+        
+        .status-bar .signal-icon .bar-4 {
+            height: 16px;
+        }
+        
+        .status-bar .bluetooth-icon {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .status-bar .time {
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
         }
         
         /* Content area with horizontal scroll for panels - no visible scrollbar */
@@ -544,12 +576,18 @@
     <div class="bmw-id6">
         <!-- Status Bar -->
         <div class="status-bar">
-            <div class="signal">
-                <span class="connection">•</span>
+            <div class="left-items">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAxOCI+PHBhdGggZD0iTTAgMGgyNHYySDBoLTJ2MTZoMlYwek0yIDRoMjB2MkgyVjR6bTAgNGgyMHYySDJWOHptMCA0aDIwdjJIMnYtMnoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" alt="View mode" class="view-icon" title="Tile view">
             </div>
-            <div class="time">{{ time }}</div>
-            <div class="nav-icons">
-                <a href="/phone" class="nav-icon" title="Phone">📱</a>
+            <div class="right-items">
+                <div class="signal-icon">
+                    <div class="bar bar-1"></div>
+                    <div class="bar bar-2"></div>
+                    <div class="bar bar-3"></div>
+                    <div class="bar bar-4"></div>
+                </div>
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgNTEyIj48cGF0aCBkPSJNMTUwIDBjLTUzIDAtOTYuOCAzNS45LTk2LjggODB2MzUyYzAgNDQuMSA0My44IDgwIDk2LjggODBzOTYuOC0zNS45IDk2LjgtODBWODBjMC00NC4xLTQzLjgtODAtOTYuOC04MHptMCAzMDMuOGM0NiAwIDgzLjItMzcuMiA4My4yLTgzLjJzLTM3LjItODMuMi04My4yLTgzLjItODMuMiAzNy4yLTgzLjIgODMuMiAzNy4yIDgzLjIgODMuMiA4My4yeiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==" alt="Bluetooth" class="bluetooth-icon" title="Bluetooth audio">
+                <div class="time">{{ time }}</div>
             </div>
         </div>
         
