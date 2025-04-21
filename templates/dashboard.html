@@ -134,12 +134,12 @@
             overflow: hidden;
         }
         
-        /* Media panel specifics */
+        /* Media panel specifics - updated to match reference image */
         .media-panel .media-info {
             display: flex;
             flex-direction: column;
             gap: 5px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
         .media-panel .artist {
@@ -155,11 +155,17 @@
         .media-panel .album-art {
             width: 80px;
             height: 80px;
-            background: #333;
-            margin: 10px 0;
+            margin: 5px 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+        
+        .media-panel .album-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .media-panel .media-bar {
@@ -277,12 +283,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 10px;
+            margin-top: 5px;
+            height: 80px;
+            overflow: hidden;
         }
         
         .vehicle-panel .bmw-car-img {
-            width: 90%;
-            max-height: 80px;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
             filter: brightness(1.1);
         }
@@ -340,63 +348,54 @@
         .connected-panel .weather-forecast {
             font-size: 12px;
             color: #999;
+            margin-bottom: 12px;
         }
         
-        .connected-panel .services {
+        .connected-panel .weather-details {
+            width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         
-        .connected-panel .service-item {
+        .connected-panel .weather-detail-item {
             display: flex;
-            align-items: center;
-            padding: 10px;
-            background: #222;
-            border-radius: 5px;
+            justify-content: space-between;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            padding: 4px 10px;
         }
         
-        .connected-panel .service-icon {
-            margin-right: 10px;
+        .connected-panel .detail-label {
+            color: #aaa;
         }
         
-        .connected-panel .service-name {
+        .connected-panel .detail-value {
+            color: #fff;
             font-weight: 500;
         }
         
         /* Notifications panel specifics */
-        .notif-panel .notif-list {
+        .notif-panel .notif-count-container {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
         }
         
-        .notif-panel .notif-item {
+        .notif-panel .notif-count {
             display: flex;
-            padding: 10px;
-            background: #222;
-            border-radius: 5px;
-            border-left: 3px solid #1c69d4;
-        }
-        
-        .notif-panel .notif-content {
-            flex: 1;
-        }
-        
-        .notif-panel .notif-title {
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-        
-        .notif-panel .notif-desc {
-            font-size: 12px;
-            color: #aaa;
-        }
-        
-        .notif-panel .notif-time {
-            font-size: 11px;
-            color: #777;
-            margin-top: 5px;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background-color: transparent;
+            border: 2px solid #1c69d4;
+            border-radius: 12px;
+            font-size: 32px;
+            font-weight: 600;
+            color: #fff;
         }
     </style>
 </head>
@@ -420,15 +419,15 @@
                 <div class="panel-content">
                     <div class="media-info">
                         <div class="artist">Unknown artist</div>
-                        <div class="track">{{ radio_data.station_name }}</div>
+                        <div class="track">'cause You Are You</div>
                     </div>
                     <div class="album-art">
-                        <span class="art-placeholder">♫</span>
+                        <img src="https://i.ibb.co/1TTm3D4/catch-album.jpg" alt="Album Cover" class="album-cover">
                     </div>
                     <div class="media-bar">
                         <span class="play-icon">▶</span>
-                        <span class="source">{{ radio_data.mode }} Radio</span>
-                        <span class="details">{{ radio_data.frequency }}</span>
+                        <span class="source">FM Radio</span>
+                        <span class="details">95.4 MHz</span>
                     </div>
                 </div>
             </div>
@@ -449,14 +448,10 @@
                     </div>
                     
                     <div class="device-info">
-                        <div class="device-name">HU-MGU</div>
+                        <div class="device-name">Pixel 7 Pro</div>
                         <div class="battery">
                             <span class="battery-icon">🔋</span>
                         </div>
-                    </div>
-                    
-                    <div class="placeholder">
-                        <div>Bluetooth ready</div>
                     </div>
                 </div>
             </div>
@@ -508,16 +503,18 @@
                     <!-- Weather widget as main ConnectedDrive feature -->
                     <div class="connected-weather">
                         <div class="weather-icon">☀️</div>
-                        <div class="weather-temp">{{ outside_temp }}°C</div>
+                        <div class="weather-temp">22°C</div>
                         <div class="weather-location">Berlin, Germany</div>
                         <div class="weather-forecast">Sunny, clear skies</div>
-                    </div>
-                    
-                    <!-- Additional ConnectedDrive services -->
-                    <div class="services">
-                        <div class="service-item">
-                            <div class="service-icon">🌐</div>
-                            <div class="service-name">Online Services</div>
+                        <div class="weather-details">
+                            <div class="weather-detail-item">
+                                <span class="detail-label">Humidity:</span>
+                                <span class="detail-value">45%</span>
+                            </div>
+                            <div class="weather-detail-item">
+                                <span class="detail-label">Wind:</span>
+                                <span class="detail-value">8 km/h</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -529,21 +526,8 @@
                     <div class="panel-title">🔔 Notifications</div>
                 </div>
                 <div class="panel-content">
-                    <div class="notif-list">
-                        <div class="notif-item">
-                            <div class="notif-content">
-                                <div class="notif-title">System Update Available</div>
-                                <div class="notif-desc">Software version 2.5 is ready to install</div>
-                                <div class="notif-time">Today, 09:45</div>
-                            </div>
-                        </div>
-                        <div class="notif-item">
-                            <div class="notif-content">
-                                <div class="notif-title">Service Reminder</div>
-                                <div class="notif-desc">Scheduled maintenance in 500 miles</div>
-                                <div class="notif-time">Yesterday, 15:30</div>
-                            </div>
-                        </div>
+                    <div class="notif-count-container">
+                        <div class="notif-count">2</div>
                     </div>
                 </div>
             </div>
