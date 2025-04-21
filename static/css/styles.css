@@ -4,38 +4,44 @@
 :root {
     /* BMW Blue */
     --bmw-blue: #1c69d4;
-    /* Light colors for day mode */
-    --background-color: #000000;
-    --panel-background: #1a1a1a;
+    /* Dark background with blue tint - closer to actual iD6 */
+    --background-color: #0a0e14;
+    --panel-background: #12171d;
     --text-primary: #ffffff;
-    --text-secondary: #cccccc;
-    --text-disabled: #555555;
+    --text-secondary: #b8c1d0;
+    --text-disabled: #555e70;
     /* Dashboard colors */
-    --gauge-background: #1a1a1a;
+    --gauge-background: #12171f;
     --speed-color: #1c69d4;
-    --rpm-color: #ff4500;
-    --fuel-color: #ffcc00;
+    --rpm-color: #d74c29;
+    --fuel-color: #f7cb2d;
     --coolant-color: #00aaff;
     /* Media colors */
     --volume-bar: #1c69d4;
     --signal-bar: #00cc66;
     /* Accent colors */
-    --accent-red: #ff0000;
-    --accent-green: #00ff00;
-    --accent-yellow: #ffcc00;
+    --accent-red: #e63e2c;
+    --accent-green: #44c97b;
+    --accent-yellow: #f7cb2d;
     /* Night mode colors */
-    --night-background: #000000;
-    --night-panel: #0a0a0a;
-    --night-text-primary: #bbbbbb;
-    --night-text-secondary: #888888;
-    --night-bmw-blue: #0a3b77;
+    --night-background: #070b0f;
+    --night-panel: #0a0e12;
+    --night-text-primary: #b8c1d0;
+    --night-text-secondary: #8192a5;
+    --night-bmw-blue: #0e3772;
+    /* Button gradients - like BMW iD6 */
+    --gradient-blue: linear-gradient(135deg, #2d81e4 0%, #1554a7 100%);
+    --gradient-dark: linear-gradient(135deg, #2a3342 0%, #1a222e 100%);
+    /* Card design elements */
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --card-border-radius: 8px;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'BMW Type Global Pro', 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -47,6 +53,19 @@ body {
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 35%;
+    background: linear-gradient(to bottom, rgba(28, 105, 212, 0.05), rgba(10, 14, 20, 0));
+    z-index: 0;
+    pointer-events: none;
 }
 
 /* Night Mode */
@@ -69,12 +88,34 @@ body.night-mode {
 
 /* Status Bar */
 #status-bar {
-    background-color: var(--panel-background);
     display: flex;
     justify-content: space-between;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    background: linear-gradient(180deg, rgba(12, 18, 26, 0.9) 0%, rgba(16, 24, 34, 0.8) 100%);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    z-index: 10;
+    position: relative;
+}
+
+#status-bar .time {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+#status-bar .temperature {
+    display: flex;
+    align-items: center;
+}
+
+#status-bar .temperature::before {
+    content: '●';
+    color: var(--bmw-blue);
+    margin-right: 6px;
+    font-size: 12px;
 }
 
 /* Content Area */
@@ -97,86 +138,150 @@ body.night-mode {
 .gauges {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 40px;
+    margin: 30px 0 50px;
 }
 
 .gauge-container {
     text-align: center;
+    position: relative;
 }
 
 .gauge-title {
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
     color: var(--text-secondary);
+    opacity: 0.9;
 }
 
 .gauge {
-    width: 180px;
-    height: 180px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
-    background-color: var(--gauge-background);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: radial-gradient(circle at center, #1c2230 0%, #0e131c 70%, #080c14 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
     position: relative;
+    overflow: hidden;
 }
 
-.gauge.speed-gauge {
-    border-top: 8px solid var(--speed-color);
+.gauge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 200px 200px 0 0;
+    z-index: 1;
 }
 
-.gauge.rpm-gauge {
-    border-top: 8px solid var(--rpm-color);
+.gauge.speed-gauge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #106dd3 0%, #2d8df9 50%, #106dd3 100%);
+    border-radius: 8px 8px 0 0;
+}
+
+.gauge.rpm-gauge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #c23c21 0%, #e85538 50%, #c23c21 100%);
+    border-radius: 8px 8px 0 0;
 }
 
 .gauge-value {
-    font-size: 42px;
-    font-weight: bold;
+    font-size: 52px;
+    font-weight: 600;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 2;
 }
 
 .gauge-unit {
     font-size: 16px;
     color: var(--text-secondary);
+    margin-top: 4px;
+    font-weight: 500;
+    position: relative;
+    z-index: 2;
 }
 
 .vehicle-data {
     display: flex;
     justify-content: space-around;
+    margin-bottom: 30px;
 }
 
 .data-container {
-    background-color: var(--panel-background);
+    background: linear-gradient(145deg, rgba(22, 30, 44, 0.95) 0%, rgba(12, 18, 28, 0.95) 100%);
     padding: 20px;
-    border-radius: 8px;
+    border-radius: var(--card-border-radius);
     width: 45%;
     text-align: center;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    position: relative;
+    overflow: hidden;
+}
+
+.data-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-blue);
+    opacity: 0.8;
+}
+
+.data-container:nth-child(2)::before {
+    background: linear-gradient(90deg, #c23c21 0%, #e85538 50%, #c23c21 100%);
 }
 
 .data-title {
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 500;
     color: var(--text-secondary);
     margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .data-value {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text-primary);
 }
 
 .fuel-bar {
-    height: 15px;
-    background-color: #333;
-    border-radius: 7px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
     overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .fuel-level {
     height: 100%;
-    background-color: var(--fuel-color);
+    background: linear-gradient(90deg, #e8c52d 0%, #f7d949 50%, #e8c52d 100%);
+    box-shadow: 0 0 5px rgba(247, 203, 45, 0.5);
 }
 
 /* Media Screen */
@@ -184,80 +289,130 @@ body.night-mode {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .media-title {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text-primary);
 }
 
 .media-mode {
-    background-color: var(--bmw-blue);
+    background: var(--gradient-blue);
     color: white;
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 4px;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(28, 105, 212, 0.4);
 }
 
 .station-info {
-    background-color: var(--panel-background);
-    padding: 15px;
-    border-radius: 8px;
+    background: linear-gradient(145deg, rgba(22, 30, 44, 0.95) 0%, rgba(12, 18, 28, 0.95) 100%);
+    padding: 20px;
+    border-radius: var(--card-border-radius);
     margin-bottom: 20px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    position: relative;
+}
+
+.station-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-blue);
+    opacity: 0.8;
 }
 
 .station-name {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 5px;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-primary);
 }
 
 .station-frequency {
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 500;
     color: var(--text-secondary);
+    letter-spacing: 0.5px;
 }
 
 .rds-text {
-    background-color: var(--panel-background);
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    background: linear-gradient(145deg, rgba(22, 30, 44, 0.95) 0%, rgba(12, 18, 28, 0.95) 100%);
+    padding: 20px;
+    border-radius: var(--card-border-radius);
+    margin-bottom: 25px;
     font-size: 18px;
     height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    position: relative;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.rds-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2fa65a 0%, #4ad87e 50%, #2fa65a 100%);
+    opacity: 0.8;
 }
 
 .signal-strength {
     display: flex;
     align-items: center;
     margin-bottom: 30px;
+    padding: 0 5px;
 }
 
 .signal-label {
     width: 60px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .signal-bar-container {
     flex: 1;
-    background-color: #333;
+    background: rgba(0, 0, 0, 0.2);
     height: 10px;
     border-radius: 5px;
     margin: 0 10px;
     overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .signal-bar {
     height: 100%;
-    background-color: var(--signal-bar);
+    background: linear-gradient(90deg, #2fa65a 0%, #4ad87e 50%, #2fa65a 100%);
+    box-shadow: 0 0 5px rgba(79, 216, 126, 0.5);
 }
 
 .signal-value {
     width: 60px;
     text-align: right;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
 .media-controls {
@@ -269,77 +424,108 @@ body.night-mode {
 .media-button {
     padding: 15px 0;
     width: 30%;
-    background-color: var(--panel-background);
-    border: none;
-    border-radius: 8px;
+    background: linear-gradient(145deg, rgba(22, 30, 44, 0.95) 0%, rgba(12, 18, 28, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: var(--card-border-radius);
     color: var(--text-primary);
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    box-shadow: var(--card-shadow);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .media-button:hover {
-    background-color: #2a2a2a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+}
+
+.media-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .media-button.primary {
-    background-color: var(--bmw-blue);
-    font-weight: bold;
+    background: var(--gradient-blue);
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(28, 105, 212, 0.4);
 }
 
 .media-button.primary:hover {
-    background-color: #1555b3;
+    box-shadow: 0 6px 25px rgba(28, 105, 212, 0.5);
 }
 
 .volume-control {
     display: flex;
     align-items: center;
     margin-bottom: 30px;
+    padding: 0 5px;
 }
 
 .volume-label {
     width: 60px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 input[type="range"] {
     flex: 1;
-    height: 15px;
+    height: 10px;
     -webkit-appearance: none;
     margin: 0 10px;
-    background: #333;
-    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
     overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background: var(--bmw-blue);
+    background: #ffffff;
     cursor: pointer;
     box-shadow: -100px 0 0 100px var(--bmw-blue);
+    border: 2px solid var(--bmw-blue);
 }
 
 .volume-value {
     width: 60px;
     text-align: right;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
 .mode-button {
     width: 100%;
     padding: 15px 0;
-    background-color: var(--panel-background);
-    border: none;
-    border-radius: 8px;
+    background: linear-gradient(145deg, rgba(22, 30, 44, 0.95) 0%, rgba(12, 18, 28, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: var(--card-border-radius);
     color: var(--text-primary);
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    box-shadow: var(--card-shadow);
 }
 
 .mode-button:hover {
-    background-color: #2a2a2a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+}
+
+.mode-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* Navigation Screen */
@@ -455,8 +641,12 @@ input[type="range"]::-webkit-slider-thumb {
 /* Navigation Bar */
 #nav-bar {
     display: flex;
-    background-color: var(--panel-background);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(180deg, rgba(10, 14, 20, 0.9) 0%, rgba(16, 22, 30, 0.95) 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 3px 5px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 10;
 }
 
 .nav-button {
@@ -465,16 +655,37 @@ input[type="range"]::-webkit-slider-thumb {
     background-color: transparent;
     border: none;
     color: var(--text-secondary);
-    font-size: 16px;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
     cursor: pointer;
     transition: all 0.3s;
+    position: relative;
+    text-transform: uppercase;
 }
 
 .nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-button::before {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 50%;
+    width: 0;
+    height: 4px;
+    background: transparent;
+    transform: translateX(-50%);
+    transition: width 0.3s;
 }
 
 .nav-button.active {
-    color: var(--bmw-blue);
-    border-bottom: 3px solid var(--bmw-blue);
+    color: #ffffff;
+}
+
+.nav-button.active::before {
+    width: 40%;
+    background: var(--gradient-blue);
+    border-radius: 2px;
 }

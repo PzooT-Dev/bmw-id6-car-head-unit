@@ -1,0 +1,241 @@
+/* BMW iD6 Dashboard Styles */
+
+.id6-dashboard {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 150px);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.id6-panel {
+    flex: 1;
+    margin: 0 4px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.panel-header {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(180deg, rgba(38, 38, 38, 0.9) 0%, rgba(20, 20, 20, 0.9) 100%);
+}
+
+.panel-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.panel-content {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Media Panel */
+.media-panel {
+    background: linear-gradient(180deg, rgba(32, 32, 32, 0.9) 0%, rgba(12, 12, 12, 0.9) 100%);
+}
+
+.media-now-playing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.media-info {
+    flex: 1;
+}
+
+.media-artist {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 5px;
+}
+
+.media-track {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.media-art {
+    width: 70px;
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+}
+
+.media-art-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bmw-blue);
+    font-size: 30px;
+}
+
+.media-status {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 87, 34, 0.9);
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.media-source {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+    color: white;
+}
+
+.play-icon {
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+.source-details {
+    margin-left: auto;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Communication Panel */
+.communication-panel {
+    background: linear-gradient(180deg, rgba(30, 30, 30, 0.9) 0%, rgba(10, 10, 10, 0.9) 100%);
+}
+
+.comm-status {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.comm-device {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.device-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+}
+
+.device-battery {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.battery-indicator {
+    color: var(--bmw-blue);
+    margin-left: 5px;
+}
+
+.comm-placeholder {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+}
+
+/* Vehicle Panel */
+.vehicle-panel {
+    background: linear-gradient(180deg, rgba(32, 32, 32, 0.9) 0%, rgba(12, 12, 12, 0.9) 100%);
+}
+
+.vehicle-stats {
+    margin-bottom: 20px;
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.stat-icon {
+    width: 30px;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.stat-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+}
+
+.vehicle-image {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-placeholder {
+    width: 120px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.car-silhouette {
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.15);
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+/* Hide traditional dash by default */
+.traditional-dash {
+    display: none;
+    margin-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+}
+
+/* Media query for smaller screens or fallback */
+@media (max-width: 768px) {
+    .id6-dashboard {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .id6-panel {
+        margin-bottom: 10px;
+        min-height: 150px;
+    }
+    
+    .panel-content {
+        padding: 10px;
+    }
+    
+    .traditional-dash {
+        display: block;
+    }
+}

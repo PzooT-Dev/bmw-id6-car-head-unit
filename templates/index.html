@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BMW iD6 Interface</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/id6-dashboard.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 </head>
 <body class="{% if display_settings.night_mode %}night-mode{% endif %}">
@@ -19,34 +20,108 @@
         <div id="content">
             <div id="dashboard-screen" class="screen active">
                 <!-- Dashboard Content -->
-                <div class="gauges">
-                    <div class="gauge-container">
-                        <div class="gauge-title">SPEED</div>
-                        <div class="gauge speed-gauge">
-                            <div class="gauge-value">{{ vehicle_data.speed }}</div>
-                            <div class="gauge-unit">km/h</div>
+                <div class="id6-dashboard">
+                    <!-- Media Panel -->
+                    <div class="id6-panel media-panel">
+                        <div class="panel-header">
+                            <div class="panel-title">Media/Radio</div>
+                        </div>
+                        <div class="panel-content">
+                            <div class="media-now-playing">
+                                <div class="media-info">
+                                    <div class="media-artist">Unknown artist</div>
+                                    <div class="media-track">{{ radio_data.station_name }}</div>
+                                </div>
+                                <div class="media-art">
+                                    <div class="media-art-placeholder">
+                                        <i class="media-icon">♫</i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="media-status">
+                                <div class="media-source">
+                                    <span class="play-icon">▶</span>
+                                    <span class="source-text">{{ radio_data.mode }} Radio</span>
+                                </div>
+                                <div class="source-details">{{ radio_data.frequency }}</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="gauge-container">
-                        <div class="gauge-title">RPM</div>
-                        <div class="gauge rpm-gauge">
-                            <div class="gauge-value">{{ vehicle_data.rpm }}</div>
-                            <div class="gauge-unit"></div>
+                    
+                    <!-- Communication Panel -->
+                    <div class="id6-panel communication-panel">
+                        <div class="panel-header">
+                            <div class="panel-title">Communication</div>
+                        </div>
+                        <div class="panel-content">
+                            <div class="comm-status">
+                                <div class="comm-device">
+                                    <div class="device-name">System Status</div>
+                                    <div class="device-battery"><span class="battery-indicator">■</span></div>
+                                </div>
+                            </div>
+                            <div class="comm-placeholder">
+                                <div class="placeholder-text">No active connections</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vehicle Panel -->
+                    <div class="id6-panel vehicle-panel">
+                        <div class="panel-header">
+                            <div class="panel-title">My Vehicle</div>
+                        </div>
+                        <div class="panel-content">
+                            <div class="vehicle-stats">
+                                <div class="stat-row">
+                                    <div class="stat-icon">⛽</div>
+                                    <div class="stat-value">{{ vehicle_data.fuel_level }}%</div>
+                                </div>
+                                <div class="stat-row">
+                                    <div class="stat-icon">⚙️</div>
+                                    <div class="stat-value">{{ vehicle_data.coolant_temp }}°C</div>
+                                </div>
+                            </div>
+                            <div class="vehicle-image">
+                                <div class="image-placeholder">
+                                    <div class="car-silhouette">BMW</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="vehicle-data">
-                    <div class="data-container">
-                        <div class="data-title">FUEL</div>
-                        <div class="data-value">{{ vehicle_data.fuel_level }}%</div>
-                        <div class="fuel-bar">
-                            <div class="fuel-level" style="width: {{ vehicle_data.fuel_level }}%"></div>
+                <!-- Traditional gauges as backup/secondary view -->
+                <div class="traditional-dash">
+                    <div class="gauges">
+                        <div class="gauge-container">
+                            <div class="gauge-title">SPEED</div>
+                            <div class="gauge speed-gauge">
+                                <div class="gauge-value">{{ vehicle_data.speed }}</div>
+                                <div class="gauge-unit">km/h</div>
+                            </div>
+                        </div>
+                        <div class="gauge-container">
+                            <div class="gauge-title">RPM</div>
+                            <div class="gauge rpm-gauge">
+                                <div class="gauge-value">{{ vehicle_data.rpm }}</div>
+                                <div class="gauge-unit"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="data-container">
-                        <div class="data-title">COOLANT</div>
-                        <div class="data-value">{{ vehicle_data.coolant_temp }}°C</div>
+                    
+                    <div class="vehicle-data">
+                        <div class="data-container">
+                            <div class="data-title">FUEL</div>
+                            <div class="data-value">{{ vehicle_data.fuel_level }}%</div>
+                            <div class="fuel-bar">
+                                <div class="fuel-level" style="width: {{ vehicle_data.fuel_level }}%"></div>
+                            </div>
+                        </div>
+                        <div class="data-container">
+                            <div class="data-title">COOLANT</div>
+                            <div class="data-value">{{ vehicle_data.coolant_temp }}°C</div>
+                        </div>
                     </div>
                 </div>
             </div>
