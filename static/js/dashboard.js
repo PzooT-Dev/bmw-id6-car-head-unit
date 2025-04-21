@@ -251,8 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {
                     if (trackElement) trackElement.textContent = data.station_name;
-                    if (sourceElement) sourceElement.textContent = `${data.mode} Radio`;
-                    if (detailsElement) detailsElement.textContent = data.frequency;
+                    if (sourceElement) sourceElement.textContent = `Bluetooth Audio`;
                 })
                 .catch(error => console.error('Error fetching radio data:', error));
         }
