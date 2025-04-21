@@ -131,9 +131,9 @@ function nextTrack() {
 
 // Sample tracks data (would come from server in real implementation)
 const tracks = [
-    { artist: 'Lola Young', title: 'Messy', duration: '3:45' },
-    { artist: 'Lola Young', title: 'Woman', duration: '4:22' },
-    { artist: 'Lola Young', title: 'Pick Me Up', duration: '3:18' }
+    { artist: 'Lola Young', title: 'BMW Radio', duration: '3:45' },
+    { artist: 'Lola Young', title: 'BMW Radio', duration: '4:22' },
+    { artist: 'Lola Young', title: 'BMW Radio', duration: '3:18' }
 ];
 
 function updateTrackInfo() {
@@ -250,8 +250,8 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch('/api/radio-data')
                 .then(response => response.json())
                 .then(data => {
-                    if (trackElement) trackElement.textContent = data.station_name;
-                    if (sourceElement) sourceElement.textContent = `Bluetooth Audio`;
+                    if (trackElement) trackElement.textContent = 'BMW Radio';
+                    if (artistElement) artistElement.textContent = data.artist || 'Lola Young';
                 })
                 .catch(error => console.error('Error fetching radio data:', error));
         }
