@@ -53,6 +53,9 @@ function updateClock() {
 let currentPanelIndex = 0;
 const panels = [];
 
+// Track which set of tiles is visible (0 = first 3 tiles, 1 = next 3 tiles, etc.)
+let visibleSetIndex = 0;
+
 function selectPanel(index) {
     // Remove selected class from all panels
     panels.forEach(panel => panel.classList.remove('selected'));
@@ -65,21 +68,35 @@ function selectPanel(index) {
     currentPanelIndex = index;
     panels[currentPanelIndex].classList.add('selected');
     
-    // Always show all panels in their natural order
-    // This creates a fixed list that doesn't reposition tiles
+    // Determine which set of 3 tiles should be visible
+    const tilesPerSet = 3;
+    const newSetIndex = Math.floor(currentPanelIndex / tilesPerSet);
+    
+    // Only update the visible set if we've moved to a different set of tiles
+    if (newSetIndex !== visibleSetIndex) {
+        visibleSetIndex = newSetIndex;
+    }
+    
+    // Calculate start and end indexes for the current visible set
+    const startIndex = visibleSetIndex * tilesPerSet;
+    let endIndex = startIndex + tilesPerSet;
+    
+    // Handle the case where we're at the end of the list
+    if (endIndex > panels.length) {
+        endIndex = panels.length;
+    }
+    
+    console.log(`Showing panels ${startIndex} to ${endIndex-1}, selected: ${currentPanelIndex}`);
+    
+    // Show only the panels in the current visible set
     panels.forEach((panel, i) => {
         // Reset all panels to their natural order
         panel.style.order = i;
         
-        // Show only 3 consecutive panels at a time
-        if (i >= currentPanelIndex && i < currentPanelIndex + 3) {
-            // Show panels from currentPanelIndex to currentPanelIndex+2
-            panel.style.display = 'flex';
-        } else if (currentPanelIndex > panels.length - 3 && i < (currentPanelIndex + 3) % panels.length) {
-            // Handle wrap-around case (when near the end of the list)
+        // Show only panels in the current set
+        if (i >= startIndex && i < endIndex) {
             panel.style.display = 'flex';
         } else {
-            // Hide other panels
             panel.style.display = 'none';
         }
     });
