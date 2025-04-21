@@ -93,25 +93,26 @@
             gap: 12px;
         }
         
-        /* Red arrow indicator - just the tip outside the last tile */
+        /* Red arrow indicator at the edge of the screen */
         .red-arrow {
             position: absolute;
             right: 0;
             top: 50%;
             transform: translateY(-50%);
-            color: #e63b3b; /* BMW red color */
-            font-size: 26px;
-            font-weight: bold;
-            text-shadow: 0 0 5px rgba(255,0,0,0.5);
             opacity: 0.9;
             pointer-events: none;
             animation: pulse 2s infinite;
             z-index: 100;
             display: block;
-            width: 15px;
+            width: 20px;
             overflow: hidden;
-            height: 30px;
-            line-height: 30px;
+            height: 40px;
+        }
+        
+        .arrow-img {
+            height: 100%;
+            width: auto;
+            filter: drop-shadow(0 0 5px rgba(230, 59, 59, 0.5));
         }
         
         @keyframes pulse {
@@ -582,7 +583,9 @@
         <!-- Content Area with 6 Horizontally Scrollable Panels -->
         <div class="content">
             <!-- Red arrow indicator -->
-            <div class="red-arrow">→</div>
+            <div class="red-arrow">
+                <img src="{{ url_for('static', filename='images/arrow-right-red.svg') }}" alt="→" class="arrow-img">
+            </div>
             
             <div class="panel-container">
                 <!-- Media/Radio Panel (selected by default) -->
