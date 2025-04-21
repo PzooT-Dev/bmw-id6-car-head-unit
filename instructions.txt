@@ -1,0 +1,15 @@
+# Project Development Guidelines
+
+## Version Control Instructions
+1. All rollbacks will be done on GitHub rather than in the Replit environment
+2. No automatic rollbacks or checkpoints should be performed
+3. For any significant changes, pause the operation and await explicit confirmation before proceeding
+
+## General Development Principles
+1. Follow BMW iD6 design aesthetics closely
+2. Maintain modular structure for easy maintenance
+3. Prioritize authentic behavior over simplified implementations
+4. Simulate hardware dependencies for development but design for real hardware
+
+## GitHub Repository
+Repository: https://github.com/PzooT-Dev/bmw-id6-car-head-unit
