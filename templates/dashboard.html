@@ -89,25 +89,18 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
         
-        /* BMW iDrive selected tile style with red background */
+        /* BMW iDrive selected tile style with red header */
         .panel.selected {
-            border: none;
-            background-color: #e63b3b !important;
-            color: white;
-            box-shadow: 0 0 20px rgba(230, 59, 59, 0.6);
+            border: 1px solid rgba(230, 59, 59, 0.3);
+            box-shadow: 0 0 20px rgba(230, 59, 59, 0.3);
             transform: scale(1.02);
             z-index: 10;
             transition: all 0.3s ease;
         }
         
-        .panel.selected .panel-header,
-        .panel.selected .panel-content,
-        .panel.selected .media-status,
-        .panel.selected .service-item,
-        .panel.selected .notif-item,
-        .panel.selected .weather-widget,
-        .panel.selected .placeholder-map {
+        .panel.selected .panel-header {
             background-color: #e63b3b !important;
+            border-bottom: none;
         }
         
         .panel-header {
