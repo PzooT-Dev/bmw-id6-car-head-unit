@@ -72,17 +72,30 @@
             flex: 1;
             display: flex;
             flex-direction: row;
-            overflow-x: auto;
+            overflow-x: hidden; /* Changed from auto to hidden since we're showing only 3 */
             overflow-y: hidden;
-            padding: 1px;
-            gap: 6px;
+            gap: 12px;
             background: #000;
             white-space: nowrap;
             scrollbar-width: none; /* Hide scrollbar for Firefox */
             -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
-            max-height: 400px; /* Limit absolute height of tiles */
-            height: 400px; /* Fixed height to match BMW iD6 */
+            height: calc(100vh - 50px); /* Subtract status bar height */
+            max-height: 75vh; /* Maximum height relative to viewport */
             position: relative;
+            justify-content: center; /* Center panels in viewport */
+            box-sizing: border-box; /* Include padding in width calculation */
+            width: 100%; /* Take full width of container */
+            padding: 20px; /* Add padding on all sides */
+            align-items: center; /* Center vertically */
+        }
+        
+        /* Create a container for all panels */
+        .panel-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            gap: 12px;
         }
         
         /* Red arrow indicator on right side */
@@ -113,6 +126,14 @@
             display: none;
         }
         
+        /* Panel container styling */
+        .panel-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        
         /* Panel styling */
         .panel {
             background: linear-gradient(145deg, rgba(22, 30, 44, 0.95) 0%, rgba(12, 18, 28, 0.95) 100%);
@@ -121,11 +142,13 @@
             position: relative;
             border: 1px solid #222;
             margin: 1px;
-            min-width: 280px;
-            width: 280px;
-            height: 370px;
+            width: calc(33.333% - 12px); /* Always show exactly 3 panels with gap space */
+            min-width: 250px;
+            max-width: 350px;
+            height: min(370px, 60vh); /* Responsive height */
             max-height: 370px;
             flex-shrink: 0;
+            flex-grow: 0;
             transition: all 0.2s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
@@ -559,133 +582,135 @@
         
         <!-- Content Area with 6 Horizontally Scrollable Panels -->
         <div class="content">
-            <!-- Media/Radio Panel (selected by default) -->
-            <div class="panel media-panel selected">
-                <div class="panel-header">
-                    <div class="panel-title">♫ Media/Radio</div>
-                </div>
-                <div class="panel-content">
-                    <div class="media-info">
-                        <div class="artist">Lola Young</div>
-                        <div class="track">Messy</div>
+            <div class="panel-container">
+                <!-- Media/Radio Panel (selected by default) -->
+                <div class="panel media-panel selected">
+                    <div class="panel-header">
+                        <div class="panel-title">♫ Media/Radio</div>
                     </div>
-                    <div class="album-art">
-                        <img src="https://i1.sndcdn.com/artworks-i4ZyK3ciy6MRV3Ps-VdMJ8Q-t500x500.jpg" alt="Album Cover" class="album-cover">
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 35%;"></div>
-                        <div class="progress-time">
-                            <span class="current-time">1:24</span>
-                            <span class="total-time">3:45</span>
+                    <div class="panel-content">
+                        <div class="media-info">
+                            <div class="artist">Lola Young</div>
+                            <div class="track">Messy</div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Communication Panel -->
-            <div class="panel comm-panel">
-                <div class="panel-header">
-                    <div class="panel-title">☎ Communication</div>
-                </div>
-                <div class="panel-content">
-                    <!-- BMW iD6-style date display like the reference image -->
-                    <div class="date-display">
-                        <div class="date-number" id="date-day"></div>
-                        <div class="date-text">
-                            <div id="date-month"></div>
-                            <div id="date-year"></div>
+                        <div class="album-art">
+                            <img src="https://i1.sndcdn.com/artworks-i4ZyK3ciy6MRV3Ps-VdMJ8Q-t500x500.jpg" alt="Album Cover" class="album-cover">
                         </div>
-                    </div>
-                    
-                    <div class="device-info">
-                        <div class="device-name">Pixel 7 Pro</div>
-                        <div class="battery">
-                            <span class="battery-icon">🔋</span>
-                        </div>
-                    </div>
-                    
-                    <div class="phone-shortcut">
-                        <a href="/phone" class="phone-btn">
-                            <span class="phone-icon">📞</span>
-                            <span class="phone-label">Phone</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Vehicle Panel -->
-            <div class="panel vehicle-panel">
-                <div class="panel-header">
-                    <div class="panel-title">🚘 My Vehicle</div>
-                </div>
-                <div class="panel-content">
-                    <!-- Following exact BMW iD6 reference image format -->
-                    <div class="stats">
-                        <div class="stat-row">
-                            <div class="stat-icon">⛽</div>
-                            <div class="stat-value">12.0 l/100km</div>
-                        </div>
-                        <div class="stat-row">
-                            <div class="stat-icon">⏱</div>
-                            <div class="stat-value">25.2 km/h</div>
-                        </div>
-                    </div>
-                    <div class="car-image">
-                        <!-- BMW F31 3 Series estate image -->
-                        <img src="https://cdn.carbodypanels4u.co.uk/media/catalog/category/bmw_3_series_estate_2015-_1.png" class="bmw-car-img" alt="BMW F31 3 Series Estate">
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Android Auto Panel -->
-            <div class="panel nav-panel">
-                <div class="panel-header">
-                    <div class="panel-title"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Android_Auto_icon.svg/1200px-Android_Auto_icon.svg.png" class="panel-title-icon" alt="Android Auto"> Android Auto</div>
-                </div>
-                <div class="panel-content">
-                    <div class="placeholder-map android-auto-container">
-                        <div class="android-auto-logo">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Android_Auto_icon.svg/1200px-Android_Auto_icon.svg.png" alt="Android Auto Logo" class="aa-logo">
-                        </div>
-                        <div class="map-text">Android Auto Ready</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- ConnectedDrive Panel -->
-            <div class="panel connected-panel">
-                <div class="panel-header">
-                    <div class="panel-title">🔌 ConnectedDrive</div>
-                </div>
-                <div class="panel-content">
-                    <!-- Weather widget as main ConnectedDrive feature -->
-                    <div class="connected-weather">
-                        <div class="weather-icon">☀️</div>
-                        <div class="weather-temp">22°C</div>
-                        <div class="weather-location">Berlin, Germany</div>
-                        <div class="weather-forecast">Sunny, clear skies</div>
-                        <div class="weather-details">
-                            <div class="weather-detail-item">
-                                <span class="detail-label">Humidity:</span>
-                                <span class="detail-value">45%</span>
-                            </div>
-                            <div class="weather-detail-item">
-                                <span class="detail-label">Wind:</span>
-                                <span class="detail-value">8 km/h</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 35%;"></div>
+                            <div class="progress-time">
+                                <span class="current-time">1:24</span>
+                                <span class="total-time">3:45</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Notifications Panel -->
-            <div class="panel notif-panel">
-                <div class="panel-header">
-                    <div class="panel-title">🔔 Notifications</div>
+                
+                <!-- Communication Panel -->
+                <div class="panel comm-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">☎ Communication</div>
+                    </div>
+                    <div class="panel-content">
+                        <!-- BMW iD6-style date display like the reference image -->
+                        <div class="date-display">
+                            <div class="date-number" id="date-day"></div>
+                            <div class="date-text">
+                                <div id="date-month"></div>
+                                <div id="date-year"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="device-info">
+                            <div class="device-name">Pixel 7 Pro</div>
+                            <div class="battery">
+                                <span class="battery-icon">🔋</span>
+                            </div>
+                        </div>
+                        
+                        <div class="phone-shortcut">
+                            <a href="/phone" class="phone-btn">
+                                <span class="phone-icon">📞</span>
+                                <span class="phone-label">Phone</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-content">
-                    <div class="notif-count-container">
-                        <div class="notif-count">2</div>
+                
+                <!-- Vehicle Panel -->
+                <div class="panel vehicle-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">🚘 My Vehicle</div>
+                    </div>
+                    <div class="panel-content">
+                        <!-- Following exact BMW iD6 reference image format -->
+                        <div class="stats">
+                            <div class="stat-row">
+                                <div class="stat-icon">⛽</div>
+                                <div class="stat-value">12.0 l/100km</div>
+                            </div>
+                            <div class="stat-row">
+                                <div class="stat-icon">⏱</div>
+                                <div class="stat-value">25.2 km/h</div>
+                            </div>
+                        </div>
+                        <div class="car-image">
+                            <!-- BMW F31 3 Series estate image -->
+                            <img src="https://cdn.carbodypanels4u.co.uk/media/catalog/category/bmw_3_series_estate_2015-_1.png" class="bmw-car-img" alt="BMW F31 3 Series Estate">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Android Auto Panel -->
+                <div class="panel nav-panel">
+                    <div class="panel-header">
+                        <div class="panel-title"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Android_Auto_icon.svg/1200px-Android_Auto_icon.svg.png" class="panel-title-icon" alt="Android Auto"> Android Auto</div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="placeholder-map android-auto-container">
+                            <div class="android-auto-logo">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Android_Auto_icon.svg/1200px-Android_Auto_icon.svg.png" alt="Android Auto Logo" class="aa-logo">
+                            </div>
+                            <div class="map-text">Android Auto Ready</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ConnectedDrive Panel -->
+                <div class="panel connected-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">🔌 ConnectedDrive</div>
+                    </div>
+                    <div class="panel-content">
+                        <!-- Weather widget as main ConnectedDrive feature -->
+                        <div class="connected-weather">
+                            <div class="weather-icon">☀️</div>
+                            <div class="weather-temp">22°C</div>
+                            <div class="weather-location">Berlin, Germany</div>
+                            <div class="weather-forecast">Sunny, clear skies</div>
+                            <div class="weather-details">
+                                <div class="weather-detail-item">
+                                    <span class="detail-label">Humidity:</span>
+                                    <span class="detail-value">45%</span>
+                                </div>
+                                <div class="weather-detail-item">
+                                    <span class="detail-label">Wind:</span>
+                                    <span class="detail-value">8 km/h</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notifications Panel -->
+                <div class="panel notif-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">🔔 Notifications</div>
+                    </div>
+                    <div class="panel-content">
+                        <div class="notif-count-container">
+                            <div class="notif-count">2</div>
+                        </div>
                     </div>
                 </div>
             </div>
