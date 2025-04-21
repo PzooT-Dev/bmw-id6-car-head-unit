@@ -50,6 +50,23 @@
             gap: 10px;
         }
         
+        .status-bar .nav-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .status-bar .nav-icon {
+            font-size: 20px;
+            color: #fff;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        
+        .status-bar .nav-icon:hover {
+            transform: scale(1.1);
+            color: #1c69d4;
+        }
+        
         /* Content area with horizontal scroll for panels - no visible scrollbar */
         .content {
             flex: 1;
@@ -237,6 +254,39 @@
             color: #555;
         }
         
+        .comm-panel .phone-shortcut {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .comm-panel .phone-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #1c69d4;
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .comm-panel .phone-btn:hover {
+            background-color: #0a3b77;
+            transform: scale(1.05);
+        }
+        
+        .comm-panel .phone-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .comm-panel .phone-label {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
         /* General style improvements for all panels to match BMW iD6 */
         .panel {
             /* All BMW iD6 tiles have a common darkness level */
@@ -407,6 +457,9 @@
                 <span class="connection">•</span>
             </div>
             <div class="time">{{ time }}</div>
+            <div class="nav-icons">
+                <a href="/phone" class="nav-icon" title="Phone">📱</a>
+            </div>
         </div>
         
         <!-- Content Area with 6 Horizontally Scrollable Panels -->
@@ -452,6 +505,13 @@
                         <div class="battery">
                             <span class="battery-icon">🔋</span>
                         </div>
+                    </div>
+                    
+                    <div class="phone-shortcut">
+                        <a href="/phone" class="phone-btn">
+                            <span class="phone-icon">📞</span>
+                            <span class="phone-label">Phone</span>
+                        </a>
                     </div>
                 </div>
             </div>
