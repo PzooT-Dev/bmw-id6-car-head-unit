@@ -13,6 +13,19 @@ const detailsElement = document.querySelector('.details');
 const mpgElement = document.querySelector('.vehicle-panel .stat-row:nth-child(1) .stat-value');
 const avgSpeedElement = document.querySelector('.vehicle-panel .stat-row:nth-child(2) .stat-value');
 
+// Media player elements
+const playPauseBtn = document.querySelector('.media-btn.play-pause');
+const prevBtn = document.querySelector('.media-btn.previous');
+const nextBtn = document.querySelector('.media-btn.next');
+const progressBar = document.querySelector('.progress-fill');
+const currentTimeEl = document.querySelector('.current-time');
+const totalTimeEl = document.querySelector('.total-time');
+
+// Media player state
+let isPlaying = true;
+let currentTrack = 0;
+let currentProgress = 35; // Percentage
+
 // Socket.IO event handlers
 socket.on('connect', () => {
     console.log('Connected to server');
@@ -109,6 +122,124 @@ function updateDate() {
     if (yearElement) yearElement.textContent = year;
 }
 
+// Media player functions
+function togglePlayPause() {
+    isPlaying = !isPlaying;
+    
+    if (isPlaying) {
+        playPauseBtn.textContent = '⏸';
+        // In a real app, this would start playing the audio
+        // Simulate progress updates
+        startProgressSimulation();
+    } else {
+        playPauseBtn.textContent = '▶';
+        // In a real app, this would pause the audio
+        stopProgressSimulation();
+    }
+    
+    // Send to server (in real implementation)
+    socket.emit('media_control', { action: isPlaying ? 'play' : 'pause' });
+}
+
+function prevTrack() {
+    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+    updateTrackInfo();
+    
+    // Reset progress
+    currentProgress = 0;
+    updateProgressBar();
+    
+    // If was paused, start playing
+    if (!isPlaying) {
+        togglePlayPause();
+    }
+    
+    // Send to server (in real implementation)
+    socket.emit('media_control', { action: 'prev' });
+}
+
+function nextTrack() {
+    currentTrack = (currentTrack + 1) % tracks.length;
+    updateTrackInfo();
+    
+    // Reset progress
+    currentProgress = 0;
+    updateProgressBar();
+    
+    // If was paused, start playing
+    if (!isPlaying) {
+        togglePlayPause();
+    }
+    
+    // Send to server (in real implementation)
+    socket.emit('media_control', { action: 'next' });
+}
+
+// Sample tracks data (would come from server in real implementation)
+const tracks = [
+    { artist: 'Lazybox', title: 'Dreaming', duration: '3:45' },
+    { artist: 'Ambient Skies', title: 'Midnight Drive', duration: '4:22' },
+    { artist: 'Electric Pulse', title: 'City Lights', duration: '3:18' }
+];
+
+function updateTrackInfo() {
+    const track = tracks[currentTrack];
+    artistElement.textContent = track.artist;
+    trackElement.textContent = track.title;
+    totalTimeEl.textContent = track.duration;
+}
+
+// Progress bar simulation
+let progressTimer;
+
+function updateProgressBar() {
+    if (progressBar) {
+        progressBar.style.width = `${currentProgress}%`;
+    }
+    
+    // Update time display (simulate based on percentage)
+    if (currentTimeEl && totalTimeEl) {
+        const track = tracks[currentTrack];
+        const totalSecs = convertTimeToSeconds(track.duration);
+        const currentSecs = Math.floor(totalSecs * (currentProgress / 100));
+        currentTimeEl.textContent = convertSecondsToTime(currentSecs);
+    }
+}
+
+function startProgressSimulation() {
+    // Clear any existing timer
+    stopProgressSimulation();
+    
+    // Update progress every second (simulates playback)
+    progressTimer = setInterval(() => {
+        currentProgress += 1;
+        if (currentProgress >= 100) {
+            // Reached end of track, go to next
+            nextTrack();
+        } else {
+            updateProgressBar();
+        }
+    }, 1000);
+}
+
+function stopProgressSimulation() {
+    if (progressTimer) {
+        clearInterval(progressTimer);
+    }
+}
+
+// Utility functions for time conversion
+function convertTimeToSeconds(timeStr) {
+    const [mins, secs] = timeStr.split(':').map(Number);
+    return (mins * 60) + secs;
+}
+
+function convertSecondsToTime(totalSeconds) {
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
     // Only start clock if no server connection after 2 seconds
@@ -139,6 +270,28 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update date for the Communication panel
     updateDate();
+    
+    // Initialize media player controls
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', togglePlayPause);
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', prevTrack);
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextTrack);
+    }
+    
+    // Initialize the first track
+    updateTrackInfo();
+    updateProgressBar();
+    
+    // Start simulating playback if controls are available
+    if (playPauseBtn && isPlaying) {
+        startProgressSimulation();
+    }
     
     // Make API requests periodically to keep data fresh (if socket fails)
     setInterval(() => {
