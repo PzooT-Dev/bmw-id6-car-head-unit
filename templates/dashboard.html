@@ -128,9 +128,9 @@
             display: flex;
             align-items: center;
             padding: 12px 15px;
-            background: #111;
-            border-bottom: 3px solid #1c69d4;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to bottom, #181818, #111);
+            border-bottom: 1px solid #222;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
         }
         
         .panel-title {
@@ -143,12 +143,14 @@
         
         .panel-content {
             flex: 1;
-            background: #000;
-            padding: 10px;
+            background: linear-gradient(145deg, #080808, #030303);
+            padding: 15px;
             display: flex;
             flex-direction: column;
             font-size: 14px;
             overflow: hidden;
+            border-top: 1px solid #222;
+            box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.3);
         }
         
         /* Media panel specifics - updated to match reference image */
@@ -181,7 +183,19 @@
             justify-content: center;
             overflow: hidden;
             border-radius: 0;
-            box-shadow: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            position: relative;
+        }
+        
+        .media-panel .album-art::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
+            pointer-events: none;
         }
         
         .media-panel .album-cover {
@@ -315,8 +329,10 @@
         
         /* General style improvements for all panels to match BMW iD6 */
         .panel {
-            /* All BMW iD6 tiles have a common darkness level */
-            background-color: #101010;
+            /* Darker BMW iD6 tiles with gradient for depth */
+            background: linear-gradient(to bottom, #0d0d0d, #050505);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+            border: 1px solid #1a1a1a;
         }
         
         .panel-header {
@@ -493,7 +509,7 @@
             <!-- Media/Radio Panel (selected by default) -->
             <div class="panel media-panel selected">
                 <div class="panel-header">
-                    <div class="panel-title">♫ Media/Radio</div>
+                    <div class="panel-title">♫ BMW Radio</div>
                 </div>
                 <div class="panel-content">
                     <div class="media-info">
@@ -509,10 +525,6 @@
                             <span class="current-time">1:24</span>
                             <span class="total-time">3:45</span>
                         </div>
-                    </div>
-                    <div class="media-source">
-                        <span class="source-icon">🎧</span>
-                        <span class="source-text">Bluetooth Audio</span>
                     </div>
                 </div>
             </div>
