@@ -139,6 +139,15 @@
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .panel-title-icon {
+            height: 18px;
+            width: 18px;
+            margin-right: 8px;
+            object-fit: contain;
         }
         
         .panel-content {
@@ -414,12 +423,12 @@
         }
         
         .nav-panel .aa-logo {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             object-fit: contain;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(40,40,40,0.6) 0%, rgba(0,0,0,0) 70%);
-            padding: 5px;
+            border-radius: 0;
+            background: transparent;
+            padding: 0;
         }
         
         .nav-panel .map-text {
@@ -607,7 +616,7 @@
             <!-- Android Auto Panel -->
             <div class="panel nav-panel">
                 <div class="panel-header">
-                    <div class="panel-title">🚗 Android Auto</div>
+                    <div class="panel-title"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Android_Auto_icon.svg/1200px-Android_Auto_icon.svg.png" class="panel-title-icon" alt="Android Auto"> Android Auto</div>
                 </div>
                 <div class="panel-content">
                     <div class="placeholder-map android-auto-container">
