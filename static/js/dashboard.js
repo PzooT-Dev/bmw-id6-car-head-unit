@@ -86,12 +86,21 @@ function selectPanel(index) {
     panels[nextIndex].style.display = 'flex';
     panels[nextIndex].style.order = '3';
     
-    // Update red arrow visibility - hide on the last panel
+    // Update red arrow visibility - hide on the last panel (Notifications)
     const redArrow = document.querySelector('.red-arrow');
     if (redArrow) {
-        // Hide arrow on the last panel (Notifications)
-        const isLastPanel = currentPanelIndex === panels.length - 1;
-        redArrow.style.opacity = isLastPanel ? '0' : '1';
+        // Get the last panel index (Notifications)
+        const lastPanelIndex = panels.length - 1;
+        
+        // Hide arrow completely when on the last panel
+        if (currentPanelIndex === lastPanelIndex) {
+            redArrow.style.display = 'none';
+        } else {
+            redArrow.style.display = 'block';
+            redArrow.style.opacity = '1';
+        }
+        
+        console.log("Current panel:", currentPanelIndex, "Last panel:", lastPanelIndex, "Arrow visible:", currentPanelIndex !== lastPanelIndex);
     }
 }
 
