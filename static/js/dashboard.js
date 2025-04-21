@@ -65,6 +65,21 @@ function selectPanel(index) {
     currentPanelIndex = index;
     panels[currentPanelIndex].classList.add('selected');
     
+    // Hide all panels first
+    panels.forEach(panel => {
+        panel.style.display = 'none';
+    });
+    
+    // BMW iD6 shows 3 panels at a time with the selected one in the middle
+    // Show current panel and one on each side (or wrap around)
+    const prevIndex = (currentPanelIndex - 1 + panels.length) % panels.length;
+    const nextIndex = (currentPanelIndex + 1) % panels.length;
+    
+    // Show only these 3 panels
+    panels[prevIndex].style.display = 'flex';
+    panels[currentPanelIndex].style.display = 'flex';
+    panels[nextIndex].style.display = 'flex';
+    
     // Scroll to the selected panel with smooth animation
     panels[currentPanelIndex].scrollIntoView({ 
         behavior: 'smooth', 
