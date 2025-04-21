@@ -1,4 +1,4 @@
-/* BMW iD6 Dashboard Styles */
+/* BMW iD6 Dashboard Styles - Based on actual BMW iD6 interface */
 
 .id6-dashboard {
     display: flex;
@@ -6,17 +6,19 @@
     height: calc(100vh - 150px);
     margin-bottom: 20px;
     overflow: hidden;
+    background: #000000;
+    padding: 0;
+    border-radius: 0;
 }
 
 .id6-panel {
     flex: 1;
-    margin: 0 4px;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 2px;
+    margin: 0 1px;
+    background: #1a1a1a;
+    border-radius: 0;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     position: relative;
 }
 
