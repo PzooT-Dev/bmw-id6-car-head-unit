@@ -46,6 +46,24 @@
         .status-bar .signal {
             display: flex;
             align-items: center;
+            gap: 10px;
+        }
+        
+        .status-bar .nav-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .status-bar .nav-icon {
+            font-size: 20px;
+            color: var(--bmw-text);
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        
+        .status-bar .nav-icon:hover {
+            transform: scale(1.1);
+            color: var(--bmw-blue);
         }
         
         .status-bar .connection {

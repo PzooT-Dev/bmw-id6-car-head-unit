@@ -78,7 +78,7 @@ class BluetoothService:
         return {
             "connected": self.connected,
             "device_name": self.active_device.get("name") if self.active_device else None,
-            "device_type": self.active_device.get("type").name if self.active_device and self.active_device.get("type") else None,
+            "device_type": self.active_device.get("type").name if self.active_device and self.active_device.get("type") is not None else None,
             "battery_level": self.active_device.get("battery") if self.active_device else None,
             "signal_strength": self.active_device.get("signal") if self.active_device else None,
             "call_status": self.call_status.name,
