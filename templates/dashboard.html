@@ -50,23 +50,25 @@
             gap: 10px;
         }
         
-        /* Content area with 3 panels */
+        /* Content area with grid layout for panels */
         .content {
             flex: 1;
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
             padding: 1px;
+            gap: 2px;
             background: #000;
         }
         
         /* Panel styling */
         .panel {
-            flex: 1;
-            margin: 0 1px;
             background: #000;
             display: flex;
             flex-direction: column;
             position: relative;
             border: 1px solid #222;
+            margin: 1px;
         }
         
         .panel-header {
@@ -228,6 +230,86 @@
             margin-top: 20px;
             filter: brightness(1.2);
         }
+        
+        /* Navigation panel specifics */
+        .nav-panel .placeholder-map {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #111;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .nav-panel .map-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .nav-panel .map-text {
+            color: #aaa;
+            text-align: center;
+        }
+        
+        /* ConnectedDrive panel specifics */
+        .connected-panel .services {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .connected-panel .service-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #222;
+            border-radius: 5px;
+        }
+        
+        .connected-panel .service-icon {
+            margin-right: 10px;
+        }
+        
+        .connected-panel .service-name {
+            font-weight: 500;
+        }
+        
+        /* Notifications panel specifics */
+        .notif-panel .notif-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .notif-panel .notif-item {
+            display: flex;
+            padding: 10px;
+            background: #222;
+            border-radius: 5px;
+            border-left: 3px solid #1c69d4;
+        }
+        
+        .notif-panel .notif-content {
+            flex: 1;
+        }
+        
+        .notif-panel .notif-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .notif-panel .notif-desc {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .notif-panel .notif-time {
+            font-size: 11px;
+            color: #777;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -240,7 +322,7 @@
             <div class="time">{{ time }}</div>
         </div>
         
-        <!-- Content Area with 3 Panels -->
+        <!-- Content Area with 6 Panels in a 3x2 Grid -->
         <div class="content">
             <!-- Media/Radio Panel -->
             <div class="panel media-panel">
@@ -306,6 +388,68 @@
                     <div class="car-image">
                         <!-- White car icon -->
                         <div class="car-icon">🚙</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Panel -->
+            <div class="panel nav-panel">
+                <div class="panel-header">
+                    <div class="panel-title">🧭 Navigation</div>
+                </div>
+                <div class="panel-content">
+                    <div class="placeholder-map">
+                        <div class="map-icon">🗺️</div>
+                        <div class="map-text">Navigation system ready</div>
+                        <div class="map-text">Tap to set destination</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ConnectedDrive Panel -->
+            <div class="panel connected-panel">
+                <div class="panel-header">
+                    <div class="panel-title">🔌 ConnectedDrive</div>
+                </div>
+                <div class="panel-content">
+                    <div class="services">
+                        <div class="service-item">
+                            <div class="service-icon">🛠️</div>
+                            <div class="service-name">Remote Diagnostics</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon">🚨</div>
+                            <div class="service-name">Emergency Call</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon">🌐</div>
+                            <div class="service-name">Online Services</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Notifications Panel -->
+            <div class="panel notif-panel">
+                <div class="panel-header">
+                    <div class="panel-title">🔔 Notifications</div>
+                </div>
+                <div class="panel-content">
+                    <div class="notif-list">
+                        <div class="notif-item">
+                            <div class="notif-content">
+                                <div class="notif-title">System Update Available</div>
+                                <div class="notif-desc">Software version 2.5 is ready to install</div>
+                                <div class="notif-time">Today, 09:45</div>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-content">
+                                <div class="notif-title">Service Reminder</div>
+                                <div class="notif-desc">Scheduled maintenance in 500 miles</div>
+                                <div class="notif-time">Yesterday, 15:30</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
