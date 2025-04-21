@@ -150,6 +150,17 @@
             color: white;
         }
         
+        /* Animation when a panel is activated by pressing Enter */
+        .panel-activated {
+            animation: panel-pulse 0.3s ease;
+        }
+        
+        @keyframes panel-pulse {
+            0% { transform: scale(1.01); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1.01); }
+        }
+        
         .panel-header {
             display: flex;
             align-items: center;
@@ -329,37 +340,19 @@
             color: #555;
         }
         
-        .comm-panel .phone-shortcut {
+        .comm-panel .phone-instructions {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
-        }
-        
-        .comm-panel .phone-btn {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            background-color: #1c69d4;
-            color: white;
-            text-decoration: none;
-            padding: 15px 25px;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(28, 105, 212, 0.1);
             border-radius: 10px;
-            transition: all 0.2s ease;
-        }
-        
-        .comm-panel .phone-btn:hover {
-            background-color: #0a3b77;
-            transform: scale(1.05);
-        }
-        
-        .comm-panel .phone-icon {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        
-        .comm-panel .phone-label {
+            color: #ddd;
             font-size: 16px;
-            font-weight: 500;
+            font-style: italic;
+            text-align: center;
+            border: 1px dashed rgba(28, 105, 212, 0.3);
         }
         
         /* General style improvements for all panels to match BMW iD6 */
@@ -607,11 +600,8 @@
                             </div>
                         </div>
                         
-                        <div class="phone-shortcut">
-                            <a href="/phone" class="phone-btn">
-                                <span class="phone-icon">📞</span>
-                                <span class="phone-label">Phone</span>
-                            </a>
+                        <div class="phone-instructions">
+                            Press Enter to access phone features
                         </div>
                     </div>
                 </div>

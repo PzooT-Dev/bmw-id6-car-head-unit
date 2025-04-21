@@ -119,9 +119,22 @@ function handleKeyNavigation(event) {
             event.preventDefault();
             break;
         case 'Enter':
-            // Simulate pressing the iDrive controller to select
+            // Handle Enter key based on which panel is selected
             console.log('Selected panel:', panels[currentPanelIndex]);
-            // Additional action code would go here
+            
+            // If Communication panel (index 1) is selected, navigate to phone page
+            if (currentPanelIndex === 1) {
+                // Communication panel - go to phone page
+                window.location.href = '/phone';
+            } else {
+                // For other panels, highlight the panel briefly to show selection
+                const selectedPanel = panels[currentPanelIndex];
+                selectedPanel.classList.add('panel-activated');
+                setTimeout(() => {
+                    selectedPanel.classList.remove('panel-activated');
+                }, 300);
+            }
+            
             event.preventDefault();
             break;
     }
