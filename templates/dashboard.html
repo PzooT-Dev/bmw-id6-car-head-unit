@@ -103,17 +103,18 @@
         .content {
             flex: 1;
             display: flex;
-            flex-direction: column; /* Changed to column to properly center the panel container */
+            flex-direction: column;
             overflow: hidden; 
             background: #000;
-            height: calc(100vh - 50px); /* Subtract status bar height */
-            max-height: 75vh; /* Maximum height relative to viewport */
+            height: calc(100vh - 40px); /* Reduced from 50px */
+            max-height: 95vh; /* Increased from 75vh */
             position: relative;
-            box-sizing: border-box; /* Include padding in width calculation */
-            width: 100%; /* Take full width of container */
-            padding: 20px; /* Add padding on all sides */
-            align-items: center; /* Center vertically */
-            justify-content: center; /* Center the panel container */
+            box-sizing: border-box;
+            width: 100%; 
+            padding: 10px 20px; /* Reduced top/bottom padding */
+            align-items: center;
+            justify-content: flex-start; /* Changed from center to reduce bottom space */
+            margin-bottom: 0; /* Eliminate bottom margin */
         }
         
         /* Create a container for all panels */
@@ -143,8 +144,9 @@
             display: flex;
             justify-content: center;
             gap: 12px;
-            min-height: 350px;
+            min-height: 400px; /* Increased from 350px */
             flex-wrap: nowrap;
+            margin-top: 10px; /* Add some top margin */
         }
         
         /* Panel styling */
@@ -158,8 +160,8 @@
             width: calc(33.333% - 12px); /* Exactly 1/3 of the container minus gap */
             min-width: 0; /* Allow panels to shrink below min-width */
             flex: 1; /* Each visible panel takes equal space */
-            height: min(370px, 60vh); /* Responsive height */
-            max-height: 370px;
+            height: min(420px, 75vh); /* Increased responsive height */
+            max-height: 420px; /* Increased from 370px */
             transition: all 0.2s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
@@ -254,7 +256,7 @@
         
         .media-panel .album-art {
             width: 100%;
-            height: 160px;
+            height: 210px; /* Increased from 160px to fill larger panel */
             margin: 15px 0;
             display: flex;
             align-items: center;
@@ -436,8 +438,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 5px;
-            height: 80px;
+            margin-top: 15px;
+            height: 180px; /* Increased from 80px to fill more space */
             overflow: hidden;
         }
         
