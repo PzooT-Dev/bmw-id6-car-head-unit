@@ -16,6 +16,9 @@ from datetime import datetime
 from flask import Flask, render_template, jsonify
 from flask_socketio import SocketIO
 
+# Import our services
+from services.bluetooth import BluetoothService
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -30,6 +33,9 @@ logger = logging.getLogger(__name__)
 # Create Flask app and SocketIO instance
 app = Flask(__name__)
 socketio = SocketIO(app)
+
+# Initialize services
+bluetooth_service = BluetoothService()
 
 # Simulated vehicle data
 vehicle_data = {
@@ -62,6 +68,11 @@ def index():
                           time=datetime.now().strftime('%H:%M'),
                           outside_temp=vehicle_data['outside_temp'])
 
+@app.route('/phone')
+def phone():
+    """Render the BMW iD6 phone interface."""
+    return render_template('phone.html', time=datetime.now().strftime('%H:%M'))
+
 @app.route('/api/vehicle-data')
 def get_vehicle_data():
     """API endpoint to get current vehicle data."""
@@ -83,6 +94,81 @@ def handle_connect():
     socketio.emit('vehicle_update', vehicle_data)
     socketio.emit('radio_update', radio_data)
 
+# Bluetooth Socket.IO events
+@socketio.on('get_bluetooth_status')
+def handle_get_bluetooth_status():
+    """Handle request for Bluetooth status."""
+    status = bluetooth_service.get_status()
+    socketio.emit('bluetooth_status', status)
+
+@socketio.on('get_call_history')
+def handle_get_call_history():
+    """Handle request for call history."""
+    history = bluetooth_service.get_call_history()
+    socketio.emit('call_history', history)
+
+@socketio.on('get_contacts')
+def handle_get_contacts():
+    """Handle request for contacts."""
+    contacts = bluetooth_service.get_contacts()
+    socketio.emit('contacts', contacts)
+
+@socketio.on('get_paired_devices')
+def handle_get_paired_devices():
+    """Handle request for paired devices."""
+    devices = bluetooth_service.get_paired_devices()
+    socketio.emit('paired_devices', devices)
+
+@socketio.on('bluetooth_connect')
+def handle_bluetooth_connect(data):
+    """Handle Bluetooth connection request."""
+    device_id = data.get('device_id') if data else None
+    success = bluetooth_service.connect(device_id)
+    if success:
+        socketio.emit('bluetooth_status', bluetooth_service.get_status())
+    else:
+        socketio.emit('bluetooth_error', {'message': 'Failed to connect'})
+
+@socketio.on('bluetooth_disconnect')
+def handle_bluetooth_disconnect(data=None):
+    """Handle Bluetooth disconnection request."""
+    success = bluetooth_service.disconnect()
+    if success:
+        socketio.emit('bluetooth_status', bluetooth_service.get_status())
+    else:
+        socketio.emit('bluetooth_error', {'message': 'Failed to disconnect'})
+
+@socketio.on('make_call')
+def handle_make_call(data):
+    """Handle request to make a call."""
+    number = data.get('number')
+    contact_id = data.get('contact_id')
+    success = bluetooth_service.make_call(number, contact_id)
+    if success:
+        socketio.emit('bluetooth_status', bluetooth_service.get_status())
+    else:
+        socketio.emit('bluetooth_error', {'message': 'Failed to make call'})
+
+@socketio.on('answer_call')
+def handle_answer_call(data=None):
+    """Handle request to answer a call."""
+    success = bluetooth_service.answer_call()
+    if success:
+        socketio.emit('bluetooth_status', bluetooth_service.get_status())
+    else:
+        socketio.emit('bluetooth_error', {'message': 'Failed to answer call'})
+
+@socketio.on('end_call')
+def handle_end_call(data=None):
+    """Handle request to end a call."""
+    success = bluetooth_service.end_call()
+    if success:
+        socketio.emit('bluetooth_status', bluetooth_service.get_status())
+        # Also update call history when a call ends
+        socketio.emit('call_history', bluetooth_service.get_call_history())
+    else:
+        socketio.emit('bluetooth_error', {'message': 'Failed to end call'})
+
 def update_simulated_data():
     """Background thread to simulate vehicle data updates."""
     while True:
@@ -99,6 +185,10 @@ def update_simulated_data():
         socketio.emit('vehicle_update', vehicle_data)
         socketio.emit('radio_update', radio_data)
         
+        # Also emit Bluetooth status periodically
+        bluetooth_status = bluetooth_service.get_status()
+        socketio.emit('bluetooth_status', bluetooth_status)
+        
         # Slow down updates to reduce CPU usage
         time.sleep(2)
 
@@ -112,6 +202,12 @@ if __name__ == '__main__':
         
         if not os.path.exists('static'):
             os.makedirs('static')
+            
+        # Start the Bluetooth service
+        bluetooth_service.start()
+        
+        # Connect to the default device (for development convenience)
+        bluetooth_service.connect('device1')  # Connect to Pixel 7 Pro
         
         # Start background thread for simulated data
         threading.Thread(target=update_simulated_data, daemon=True).start()

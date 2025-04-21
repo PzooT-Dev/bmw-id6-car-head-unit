@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMW iD6 - Phone</title>
+    <style>
+        /* BMW iD6 colors */
+        :root {
+            --bmw-blue: #1c69d4;
+            --bmw-dark-blue: #0a3b77;
+            --bmw-background: #000000;
+            --bmw-panel: #101010;
+            --bmw-accent: #ff6d00;
+            --bmw-text: #ffffff;
+            --bmw-text-secondary: #cccccc;
+            --bmw-text-disabled: #555555;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bmw-background);
+            color: var(--bmw-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            background-color: var(--bmw-panel);
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            border-bottom: 1px solid #222;
+        }
+        
+        .status-bar .signal {
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-bar .connection {
+            color: #33cc33;
+            margin-right: 5px;
+        }
+        
+        /* Main container */
+        .phone-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Phone tabs */
+        .phone-tabs {
+            display: flex;
+            background-color: #151515;
+            border-bottom: 1px solid #333;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            color: var(--bmw-text-secondary);
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            color: var(--bmw-text);
+            border-bottom: 3px solid var(--bmw-blue);
+            font-weight: 500;
+        }
+        
+        /* Phone content */
+        .phone-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        /* Connection status */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--bmw-panel);
+            border-radius: 8px;
+        }
+        
+        .device-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        .device-info {
+            flex: 1;
+        }
+        
+        .device-name {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .device-meta {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: var(--bmw-text-secondary);
+            margin-top: 5px;
+        }
+        
+        .battery-icon, .signal-icon {
+            margin-right: 5px;
+        }
+        
+        .phone-actions {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .action-button {
+            flex: 1;
+            background-color: var(--bmw-panel);
+            border: none;
+            border-radius: 8px;
+            color: var(--bmw-text);
+            padding: 12px;
+            margin: 5px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        
+        .action-button:hover {
+            background-color: #1a1a1a;
+        }
+        
+        .action-button.primary {
+            background-color: var(--bmw-blue);
+        }
+        
+        .action-button.primary:hover {
+            background-color: var(--bmw-dark-blue);
+        }
+        
+        .action-button.danger {
+            background-color: #d32f2f;
+        }
+        
+        .action-button.danger:hover {
+            background-color: #b71c1c;
+        }
+        
+        .action-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .action-label {
+            font-size: 12px;
+        }
+        
+        /* Call history */
+        .call-history {
+            margin-top: 20px;
+        }
+        
+        .history-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .call-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #222;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .call-item:hover {
+            background-color: #151515;
+        }
+        
+        .call-icon {
+            font-size: 18px;
+            margin-right: 15px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .call-icon.outgoing {
+            color: #4caf50;
+            transform: rotate(90deg);
+        }
+        
+        .call-icon.incoming {
+            color: #2196f3;
+            transform: rotate(270deg);
+        }
+        
+        .call-icon.missed {
+            color: #f44336;
+            transform: rotate(135deg);
+        }
+        
+        .call-details {
+            flex: 1;
+        }
+        
+        .call-name {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+        
+        .call-number {
+            font-size: 14px;
+            color: var(--bmw-text-secondary);
+        }
+        
+        .call-meta {
+            text-align: right;
+            font-size: 14px;
+            color: var(--bmw-text-secondary);
+        }
+        
+        .call-time {
+            margin-bottom: 5px;
+        }
+        
+        /* Contacts tab */
+        .contacts-list {
+            margin-top: 20px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #222;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .contact-item:hover {
+            background-color: #151515;
+        }
+        
+        .contact-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bmw-blue);
+            color: var(--bmw-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            margin-right: 15px;
+        }
+        
+        .contact-details {
+            flex: 1;
+        }
+        
+        .contact-name {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+        
+        .contact-number {
+            font-size: 14px;
+            color: var(--bmw-text-secondary);
+        }
+        
+        .contact-call {
+            color: var(--bmw-blue);
+            font-size: 20px;
+            padding: 10px;
+        }
+        
+        /* Dialpad tab */
+        .dialpad {
+            margin-top: 20px;
+        }
+        
+        .dial-display {
+            background-color: var(--bmw-panel);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .dial-number {
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .dial-name {
+            font-size: 14px;
+            color: var(--bmw-text-secondary);
+        }
+        
+        .dial-keys {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .dial-key {
+            background-color: var(--bmw-panel);
+            border: none;
+            border-radius: 8px;
+            color: var(--bmw-text);
+            padding: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+        
+        .dial-key:hover {
+            background-color: #1a1a1a;
+        }
+        
+        .dial-key .subtext {
+            font-size: 12px;
+            color: var(--bmw-text-secondary);
+            letter-spacing: 1px;
+        }
+        
+        .dial-actions {
+            display: flex;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .dial-action {
+            background-color: var(--bmw-blue);
+            border: none;
+            border-radius: 50%;
+            color: var(--bmw-text);
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        .dial-action:hover {
+            background-color: var(--bmw-dark-blue);
+        }
+        
+        .dial-action.call {
+            background-color: #4caf50;
+        }
+        
+        .dial-action.call:hover {
+            background-color: #388e3c;
+        }
+        
+        .dial-action.delete {
+            background-color: transparent;
+            color: var(--bmw-text-secondary);
+            font-size: 20px;
+        }
+        
+        .dial-action.delete:hover {
+            color: var(--bmw-text);
+        }
+        
+        /* Paired devices tab */
+        .devices-list {
+            margin-top: 20px;
+        }
+        
+        .device-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bmw-panel);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .device-item:hover {
+            background-color: #1a1a1a;
+        }
+        
+        .device-item.active {
+            border-left: 3px solid var(--bmw-blue);
+        }
+        
+        .device-item .device-icon {
+            margin-right: 15px;
+        }
+        
+        .device-item .device-info {
+            flex: 1;
+        }
+        
+        .device-item .device-name {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .device-item .device-type {
+            font-size: 14px;
+            color: var(--bmw-text-secondary);
+        }
+        
+        .device-item .device-status {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: var(--bmw-text-secondary);
+        }
+        
+        .device-item .device-status .status-icon {
+            color: #4caf50;
+            margin-right: 5px;
+        }
+        
+        /* Active call screen */
+        .active-call {
+            display: none; /* Hidden by default, shown when in call */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 20px;
+        }
+        
+        .active-call.show {
+            display: flex;
+        }
+        
+        .call-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .call-status {
+            font-size: 14px;
+            color: var(--bmw-text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .caller-name {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .caller-number {
+            font-size: 16px;
+            color: var(--bmw-text-secondary);
+        }
+        
+        .call-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--bmw-blue);
+            color: var(--bmw-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 30px 0;
+        }
+        
+        .call-timer {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .call-controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .call-control {
+            background-color: #333;
+            border: none;
+            border-radius: 50%;
+            color: var(--bmw-text);
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        .call-control:hover {
+            background-color: #444;
+        }
+        
+        .call-control.mute.active {
+            background-color: var(--bmw-blue);
+        }
+        
+        .call-control.speaker.active {
+            background-color: var(--bmw-blue);
+        }
+        
+        .call-control.end-call {
+            background-color: #f44336;
+            width: 70px;
+            height: 70px;
+        }
+        
+        .call-control.end-call:hover {
+            background-color: #d32f2f;
+        }
+        
+        .call-control.answer {
+            background-color: #4caf50;
+            width: 70px;
+            height: 70px;
+        }
+        
+        .call-control.answer:hover {
+            background-color: #388e3c;
+        }
+        
+        /* Incoming call notification */
+        .incoming-call {
+            display: none; /* Hidden by default, shown when incoming call */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 20px;
+            border-top: 1px solid #333;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .incoming-call.show {
+            display: block;
+        }
+        
+        @keyframes slideUp {
+            0% {
+                transform: translateY(100%);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        
+        .incoming-caller {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .incoming-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--bmw-blue);
+            color: var(--bmw-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+        
+        .incoming-details {
+            flex: 1;
+        }
+        
+        .incoming-name {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .incoming-number {
+            font-size: 14px;
+            color: var(--bmw-text-secondary);
+        }
+        
+        .incoming-controls {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .call-controls {
+                gap: 10px;
+            }
+            
+            .call-control {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .call-control.end-call,
+            .call-control.answer {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="signal">
+            <span class="connection">•</span>
+            <span>BMW iD6</span>
+        </div>
+        <div class="time">{{ time }}</div>
+    </div>
+    
+    <!-- Main container -->
+    <div class="phone-container">
+        <!-- Phone tabs -->
+        <div class="phone-tabs">
+            <div class="tab active" data-tab="recent">Recent</div>
+            <div class="tab" data-tab="contacts">Contacts</div>
+            <div class="tab" data-tab="dialpad">Dialpad</div>
+            <div class="tab" data-tab="devices">Devices</div>
+        </div>
+        
+        <!-- Phone content -->
+        <div class="phone-content">
+            <!-- Connection status -->
+            <div class="connection-status">
+                <div class="device-icon">📱</div>
+                <div class="device-info">
+                    <div class="device-name" id="device-name">Pixel 7 Pro</div>
+                    <div class="device-meta">
+                        <span class="battery-icon">🔋</span>
+                        <span id="battery-level">85%</span>
+                        <span style="margin: 0 10px;">|</span>
+                        <span class="signal-icon">📶</span>
+                        <span id="signal-strength">Strong</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Phone actions -->
+            <div class="phone-actions">
+                <button class="action-button" id="btn-contacts">
+                    <span class="action-icon">👤</span>
+                    <span class="action-label">Contacts</span>
+                </button>
+                <button class="action-button primary" id="btn-dial">
+                    <span class="action-icon">☎️</span>
+                    <span class="action-label">Dial</span>
+                </button>
+                <button class="action-button" id="btn-connect" style="display:none;">
+                    <span class="action-icon">🔄</span>
+                    <span class="action-label">Connect</span>
+                </button>
+                <button class="action-button danger" id="btn-disconnect">
+                    <span class="action-icon">📵</span>
+                    <span class="action-label">Disconnect</span>
+                </button>
+            </div>
+            
+            <!-- Tab content: Recent calls -->
+            <div class="tab-content" id="recent-tab">
+                <div class="call-history">
+                    <h3 class="history-title">Recent Calls</h3>
+                    <div id="call-history-list">
+                        <!-- Call history items will be inserted here via JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab content: Contacts -->
+            <div class="tab-content" id="contacts-tab" style="display:none;">
+                <div class="contacts-list">
+                    <h3 class="history-title">Contacts</h3>
+                    <div id="contacts-list">
+                        <!-- Contacts will be inserted here via JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab content: Dialpad -->
+            <div class="tab-content" id="dialpad-tab" style="display:none;">
+                <div class="dialpad">
+                    <div class="dial-display">
+                        <div class="dial-number" id="dial-number"></div>
+                        <div class="dial-name" id="dial-name"></div>
+                    </div>
+                    
+                    <div class="dial-keys">
+                        <button class="dial-key" data-key="1">1</button>
+                        <button class="dial-key" data-key="2">2<div class="subtext">ABC</div></button>
+                        <button class="dial-key" data-key="3">3<div class="subtext">DEF</div></button>
+                        <button class="dial-key" data-key="4">4<div class="subtext">GHI</div></button>
+                        <button class="dial-key" data-key="5">5<div class="subtext">JKL</div></button>
+                        <button class="dial-key" data-key="6">6<div class="subtext">MNO</div></button>
+                        <button class="dial-key" data-key="7">7<div class="subtext">PQRS</div></button>
+                        <button class="dial-key" data-key="8">8<div class="subtext">TUV</div></button>
+                        <button class="dial-key" data-key="9">9<div class="subtext">WXYZ</div></button>
+                        <button class="dial-key" data-key="*">*</button>
+                        <button class="dial-key" data-key="0">0<div class="subtext">+</div></button>
+                        <button class="dial-key" data-key="#">#</button>
+                    </div>
+                    
+                    <div class="dial-actions">
+                        <button class="dial-action delete" id="dial-delete">⌫</button>
+                        <button class="dial-action call" id="dial-call">📞</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab content: Paired devices -->
+            <div class="tab-content" id="devices-tab" style="display:none;">
+                <div class="devices-list">
+                    <h3 class="history-title">Paired Devices</h3>
+                    <div id="paired-devices-list">
+                        <!-- Paired devices will be inserted here via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Active call screen (hidden by default) -->
+    <div class="active-call" id="active-call">
+        <div class="call-header">
+            <div class="call-status" id="call-status">Calling...</div>
+            <div class="caller-name" id="caller-name">John Smith</div>
+            <div class="caller-number" id="caller-number">+1 (555) 123-4567</div>
+        </div>
+        
+        <div class="call-avatar" id="call-avatar">JS</div>
+        
+        <div class="call-timer" id="call-timer">00:00</div>
+        
+        <div class="call-controls" id="ongoing-call-controls">
+            <button class="call-control mute" id="btn-mute">🔇</button>
+            <button class="call-control end-call" id="btn-end-call">📞</button>
+            <button class="call-control speaker" id="btn-speaker">🔊</button>
+        </div>
+        
+        <div class="call-controls" id="incoming-call-controls" style="display:none;">
+            <button class="call-control end-call" id="btn-reject-call">📞</button>
+            <button class="call-control answer" id="btn-answer-call">📞</button>
+        </div>
+    </div>
+    
+    <!-- Incoming call notification (hidden by default) -->
+    <div class="incoming-call" id="incoming-call">
+        <div class="incoming-caller">
+            <div class="incoming-avatar" id="incoming-avatar">JS</div>
+            <div class="incoming-details">
+                <div class="incoming-name" id="incoming-name">John Smith</div>
+                <div class="incoming-number" id="incoming-number">+1 (555) 123-4567</div>
+            </div>
+        </div>
+        
+        <div class="incoming-controls">
+            <button class="call-control end-call" id="btn-reject-incoming">📞</button>
+            <button class="call-control answer" id="btn-answer-incoming">📞</button>
+        </div>
+    </div>
+    
+    <!-- Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    
+    <!-- Phone JavaScript -->
+    <script>
+        // Connect to Socket.IO server
+        const socket = io();
+        
+        // Global state
+        let currentTab = 'recent';
+        let dialpadNumber = '';
+        let callTimer = null;
+        let callDuration = 0;
+        let isMuted = false;
+        let isSpeaker = false;
+        let bluetoothStatus = {};
+        let contactsList = [];
+        let callHistoryList = [];
+        let pairedDevicesList = [];
+        
+        // Helper function to format time
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Helper function to format relative time (e.g., "2 hours ago")
+        function formatRelativeTime(timestamp) {
+            const now = new Date();
+            const date = new Date(timestamp * 1000);
+            const seconds = Math.floor((now - date) / 1000);
+            
+            let interval = Math.floor(seconds / 31536000);
+            if (interval > 1) return interval + ' years ago';
+            if (interval === 1) return 'a year ago';
+            
+            interval = Math.floor(seconds / 2592000);
+            if (interval > 1) return interval + ' months ago';
+            if (interval === 1) return 'a month ago';
+            
+            interval = Math.floor(seconds / 86400);
+            if (interval > 1) return interval + ' days ago';
+            if (interval === 1) return 'yesterday';
+            
+            interval = Math.floor(seconds / 3600);
+            if (interval > 1) return interval + ' hours ago';
+            if (interval === 1) return 'an hour ago';
+            
+            interval = Math.floor(seconds / 60);
+            if (interval > 1) return interval + ' minutes ago';
+            if (interval === 1) return 'a minute ago';
+            
+            if (seconds < 10) return 'just now';
+            
+            return Math.floor(seconds) + ' seconds ago';
+        }
+        
+        // Helper function to get initials from a name
+        function getInitials(name) {
+            if (!name) return '?';
+            
+            const parts = name.split(' ');
+            if (parts.length === 1) {
+                return parts[0].charAt(0).toUpperCase();
+            }
+            return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+        }
+        
+        // Show a specific tab
+        function showTab(tabName) {
+            currentTab = tabName;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.dataset.tab === tabName) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Show the selected tab content, hide others
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.getElementById(`${tabName}-tab`).style.display = 'block';
+        }
+        
+        // Update the UI based on Bluetooth status
+        function updateBluetoothUI(status) {
+            bluetoothStatus = status;
+            
+            // Update device info
+            document.getElementById('device-name').textContent = status.device_name || 'No Device';
+            document.getElementById('battery-level').textContent = status.battery_level ? `${status.battery_level}%` : 'N/A';
+            
+            // Update signal strength
+            let signalText = 'No Signal';
+            if (status.signal_strength) {
+                const signalValue = parseInt(status.signal_strength);
+                if (signalValue >= 4) signalText = 'Excellent';
+                else if (signalValue >= 3) signalText = 'Good';
+                else if (signalValue >= 2) signalText = 'Fair';
+                else signalText = 'Weak';
+            }
+            document.getElementById('signal-strength').textContent = signalText;
+            
+            // Show/hide connect/disconnect buttons
+            if (status.connected) {
+                document.getElementById('btn-connect').style.display = 'none';
+                document.getElementById('btn-disconnect').style.display = 'flex';
+            } else {
+                document.getElementById('btn-connect').style.display = 'flex';
+                document.getElementById('btn-disconnect').style.display = 'none';
+            }
+            
+            // Handle call status changes
+            if (status.call_status === 'INCOMING') {
+                showIncomingCall(status.current_call);
+            } else if (status.call_status === 'ACTIVE') {
+                showActiveCall(status.current_call);
+            } else if (status.call_status === 'OUTGOING') {
+                showOutgoingCall(status.current_call);
+            } else {
+                hideCallScreens();
+            }
+        }
+        
+        // Update the call history list
+        function updateCallHistory(history) {
+            callHistoryList = history;
+            const container = document.getElementById('call-history-list');
+            container.innerHTML = '';
+            
+            if (history.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No call history</div>';
+                return;
+            }
+            
+            history.forEach(call => {
+                let iconClass = 'call-icon';
+                if (call.type === 'outgoing') {
+                    iconClass += ' outgoing';
+                } else if (call.type === 'incoming') {
+                    iconClass += ' incoming';
+                } else if (call.type === 'missed') {
+                    iconClass += ' missed';
+                }
+                
+                const item = document.createElement('div');
+                item.className = 'call-item';
+                item.innerHTML = `
+                    <div class="${iconClass}">↑</div>
+                    <div class="call-details">
+                        <div class="call-name">${call.name || 'Unknown'}</div>
+                        <div class="call-number">${call.number}</div>
+                    </div>
+                    <div class="call-meta">
+                        <div class="call-time">${formatRelativeTime(call.end_time)}</div>
+                        <div class="call-duration">${call.duration ? formatTime(Math.round(call.duration)) : 'Missed'}</div>
+                    </div>
+                `;
+                
+                // Add click event to call the number
+                item.addEventListener('click', () => {
+                    makeCall(call.number);
+                });
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // Update the contacts list
+        function updateContacts(contacts) {
+            contactsList = contacts;
+            const container = document.getElementById('contacts-list');
+            container.innerHTML = '';
+            
+            if (contacts.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No contacts found</div>';
+                return;
+            }
+            
+            contacts.forEach(contact => {
+                const initials = getInitials(contact.name);
+                
+                const item = document.createElement('div');
+                item.className = 'contact-item';
+                item.innerHTML = `
+                    <div class="contact-avatar">${initials}</div>
+                    <div class="contact-details">
+                        <div class="contact-name">${contact.name}</div>
+                        <div class="contact-number">${contact.number}</div>
+                    </div>
+                    <div class="contact-call">📞</div>
+                `;
+                
+                // Add click event to call the contact
+                item.querySelector('.contact-call').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    makeCall(contact.number);
+                });
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // Update the paired devices list
+        function updatePairedDevices(devices) {
+            pairedDevicesList = devices;
+            const container = document.getElementById('paired-devices-list');
+            container.innerHTML = '';
+            
+            if (devices.length === 0) {
+                container.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No paired devices</div>';
+                return;
+            }
+            
+            devices.forEach(device => {
+                const isActive = bluetoothStatus.device_name === device.name;
+                let deviceIcon = '📱';
+                if (device.type === 'AUDIO') {
+                    deviceIcon = '🎧';
+                } else if (device.type === 'OTHER') {
+                    deviceIcon = '🔌';
+                }
+                
+                const item = document.createElement('div');
+                item.className = `device-item ${isActive ? 'active' : ''}`;
+                item.innerHTML = `
+                    <div class="device-icon">${deviceIcon}</div>
+                    <div class="device-info">
+                        <div class="device-name">${device.name}</div>
+                        <div class="device-type">${device.type}</div>
+                    </div>
+                    <div class="device-status">
+                        ${isActive ? '<span class="status-icon">✓</span> Connected' : 'Tap to connect'}
+                    </div>
+                `;
+                
+                // Add click event to connect to this device
+                if (!isActive) {
+                    item.addEventListener('click', () => {
+                        socket.emit('bluetooth_connect', { device_id: device.id });
+                    });
+                }
+                
+                container.appendChild(item);
+            });
+        }
+        
+        // Dialpad functions
+        function updateDialpadDisplay() {
+            document.getElementById('dial-number').textContent = dialpadNumber || 'Enter number';
+            
+            // Check if this number matches a contact
+            const matchingContact = contactsList.find(contact => 
+                contact.number.replace(/\D/g, '').includes(dialpadNumber.replace(/\D/g, ''))
+            );
+            
+            document.getElementById('dial-name').textContent = matchingContact ? matchingContact.name : '';
+        }
+        
+        function addDialpadDigit(digit) {
+            dialpadNumber += digit;
+            updateDialpadDisplay();
+        }
+        
+        function backspaceDialpad() {
+            dialpadNumber = dialpadNumber.slice(0, -1);
+            updateDialpadDisplay();
+        }
+        
+        function clearDialpad() {
+            dialpadNumber = '';
+            updateDialpadDisplay();
+        }
+        
+        function dialNumber() {
+            if (dialpadNumber.length > 0) {
+                makeCall(dialpadNumber);
+            }
+        }
+        
+        // Call functions
+        function makeCall(number) {
+            socket.emit('make_call', { number: number });
+        }
+        
+        function endCall() {
+            socket.emit('end_call', {});
+            hideCallScreens();
+            stopCallTimer();
+        }
+        
+        function answerCall() {
+            socket.emit('answer_call', {});
+            document.getElementById('incoming-call-controls').style.display = 'none';
+            document.getElementById('ongoing-call-controls').style.display = 'flex';
+        }
+        
+        function toggleMute() {
+            isMuted = !isMuted;
+            document.getElementById('btn-mute').classList.toggle('active', isMuted);
+            // In a real implementation, would send the mute state to the backend
+        }
+        
+        function toggleSpeaker() {
+            isSpeaker = !isSpeaker;
+            document.getElementById('btn-speaker').classList.toggle('active', isSpeaker);
+            // In a real implementation, would send the speaker state to the backend
+        }
+        
+        function showIncomingCall(call) {
+            if (!call) return;
+            
+            const name = call.name || 'Unknown';
+            const number = call.number || '';
+            const initials = getInitials(name);
+            
+            // Update incoming call notification
+            document.getElementById('incoming-name').textContent = name;
+            document.getElementById('incoming-number').textContent = number;
+            document.getElementById('incoming-avatar').textContent = initials;
+            document.getElementById('incoming-call').classList.add('show');
+            
+            // Update full call screen in case user wants to answer from there
+            document.getElementById('caller-name').textContent = name;
+            document.getElementById('caller-number').textContent = number;
+            document.getElementById('call-avatar').textContent = initials;
+            document.getElementById('call-status').textContent = 'Incoming Call';
+            
+            document.getElementById('incoming-call-controls').style.display = 'flex';
+            document.getElementById('ongoing-call-controls').style.display = 'none';
+            document.getElementById('active-call').classList.add('show');
+        }
+        
+        function showOutgoingCall(call) {
+            if (!call) return;
+            
+            const name = call.name || 'Unknown';
+            const number = call.number || '';
+            const initials = getInitials(name);
+            
+            document.getElementById('caller-name').textContent = name;
+            document.getElementById('caller-number').textContent = number;
+            document.getElementById('call-avatar').textContent = initials;
+            document.getElementById('call-status').textContent = 'Calling...';
+            
+            document.getElementById('ongoing-call-controls').style.display = 'flex';
+            document.getElementById('incoming-call-controls').style.display = 'none';
+            document.getElementById('active-call').classList.add('show');
+        }
+        
+        function showActiveCall(call) {
+            if (!call) return;
+            
+            // Update UI elements
+            const name = call.name || 'Unknown';
+            const number = call.number || '';
+            const initials = getInitials(name);
+            
+            document.getElementById('caller-name').textContent = name;
+            document.getElementById('caller-number').textContent = number;
+            document.getElementById('call-avatar').textContent = initials;
+            document.getElementById('call-status').textContent = 'Connected';
+            
+            document.getElementById('ongoing-call-controls').style.display = 'flex';
+            document.getElementById('incoming-call-controls').style.display = 'none';
+            document.getElementById('active-call').classList.add('show');
+            
+            // Hide the incoming call notification if it was showing
+            document.getElementById('incoming-call').classList.remove('show');
+            
+            // Start call timer
+            startCallTimer();
+        }
+        
+        function hideCallScreens() {
+            document.getElementById('active-call').classList.remove('show');
+            document.getElementById('incoming-call').classList.remove('show');
+        }
+        
+        function startCallTimer() {
+            stopCallTimer(); // Reset if already running
+            callDuration = 0;
+            updateCallTimerDisplay();
+            
+            callTimer = setInterval(() => {
+                callDuration++;
+                updateCallTimerDisplay();
+            }, 1000);
+        }
+        
+        function updateCallTimerDisplay() {
+            document.getElementById('call-timer').textContent = formatTime(callDuration);
+        }
+        
+        function stopCallTimer() {
+            if (callTimer) {
+                clearInterval(callTimer);
+                callTimer = null;
+            }
+            callDuration = 0;
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update the current time
+            setInterval(() => {
+                const now = new Date();
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                document.querySelector('.time').textContent = `${hours}:${minutes}`;
+            }, 1000);
+            
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    showTab(tab.dataset.tab);
+                });
+            });
+            
+            // Action buttons
+            document.getElementById('btn-contacts').addEventListener('click', () => {
+                showTab('contacts');
+            });
+            
+            document.getElementById('btn-dial').addEventListener('click', () => {
+                showTab('dialpad');
+            });
+            
+            document.getElementById('btn-connect').addEventListener('click', () => {
+                socket.emit('bluetooth_connect', {});
+            });
+            
+            document.getElementById('btn-disconnect').addEventListener('click', () => {
+                socket.emit('bluetooth_disconnect', {});
+            });
+            
+            // Dialpad buttons
+            document.querySelectorAll('.dial-key').forEach(key => {
+                key.addEventListener('click', () => {
+                    addDialpadDigit(key.dataset.key);
+                });
+            });
+            
+            document.getElementById('dial-delete').addEventListener('click', backspaceDialpad);
+            document.getElementById('dial-delete').addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                clearDialpad();
+            });
+            
+            document.getElementById('dial-call').addEventListener('click', dialNumber);
+            
+            // Call control buttons
+            document.getElementById('btn-end-call').addEventListener('click', endCall);
+            document.getElementById('btn-reject-call').addEventListener('click', endCall);
+            document.getElementById('btn-answer-call').addEventListener('click', answerCall);
+            
+            document.getElementById('btn-reject-incoming').addEventListener('click', endCall);
+            document.getElementById('btn-answer-incoming').addEventListener('click', answerCall);
+            
+            document.getElementById('btn-mute').addEventListener('click', toggleMute);
+            document.getElementById('btn-speaker').addEventListener('click', toggleSpeaker);
+            
+            // Initial dialpad setup
+            updateDialpadDisplay();
+            
+            // Socket.IO event handlers
+            socket.on('connect', () => {
+                console.log('Connected to server');
+                
+                // Request initial data
+                socket.emit('get_bluetooth_status', {});
+                socket.emit('get_call_history', {});
+                socket.emit('get_contacts', {});
+                socket.emit('get_paired_devices', {});
+            });
+            
+            socket.on('bluetooth_status', (data) => {
+                updateBluetoothUI(data);
+            });
+            
+            socket.on('call_history', (data) => {
+                updateCallHistory(data);
+            });
+            
+            socket.on('contacts', (data) => {
+                updateContacts(data);
+            });
+            
+            socket.on('paired_devices', (data) => {
+                updatePairedDevices(data);
+            });
+        });
+    </script>
+</body>
+</html>
