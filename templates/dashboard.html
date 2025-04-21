@@ -151,11 +151,11 @@
         
         /* Panel styling */
         .panel {
-            background: linear-gradient(145deg, rgba(22, 30, 44, 0.95) 0%, rgba(12, 18, 28, 0.95) 100%);
+            background: linear-gradient(145deg, rgba(28, 36, 50, 0.95) 0%, rgba(18, 24, 34, 0.95) 100%); /* Lightened values */
             display: none; /* Hidden by default, JS will show only 3 */
             flex-direction: column;
             position: relative;
-            border: 1px solid #222;
+            border: 1px solid #2a2a2a; /* Lightened border color */
             margin: 1px;
             width: calc(33.333% - 12px); /* Exactly 1/3 of the container minus gap */
             min-width: 0; /* Allow panels to shrink below min-width */
@@ -163,7 +163,7 @@
             height: min(420px, 75vh); /* Increased responsive height */
             max-height: 420px; /* Increased from 370px */
             transition: all 0.2s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5); /* Enhanced shadow for depth */
         }
         
         /* BMW iDrive selected tile style - matches original iD6 */
@@ -199,8 +199,8 @@
             display: flex;
             align-items: center;
             padding: 12px 15px;
-            background: linear-gradient(to bottom, #181818, #111);
-            border-bottom: 1px solid #222;
+            background: linear-gradient(to bottom, #1e1e28, #161622); /* Lighter, more blueish gradient */
+            border-bottom: 1px solid #2c2c2c; /* Lightened border */
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
         }
         
@@ -223,13 +223,13 @@
         
         .panel-content {
             flex: 1;
-            background: linear-gradient(145deg, #080808, #030303);
+            background: linear-gradient(145deg, #131820, #0a0c12); /* Lightened background */
             padding: 15px;
             display: flex;
             flex-direction: column;
             font-size: 14px;
             overflow: hidden;
-            border-top: 1px solid #222;
+            border-top: 1px solid #2a2a2a; /* Lightened border color */
             box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.3);
         }
         
@@ -392,15 +392,16 @@
         
         /* General style improvements for all panels to match BMW iD6 */
         .panel {
-            /* Darker BMW iD6 tiles with gradient for depth */
-            background: linear-gradient(to bottom, #0d0d0d, #050505);
+            /* Slightly lighter, more blueish BMW iD6 tiles with gradient for depth */
+            background: linear-gradient(to bottom, #14182a, #0a0e1a);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
-            border: 1px solid #1a1a1a;
+            border: 1px solid #2a2a2a;
         }
         
         .panel-header {
-            /* BMW uses a very subtle gradient for headers */
-            background: linear-gradient(to bottom, #181818, #111111);
+            /* BMW uses a very subtle gradient for headers - slightly lighter */
+            background: linear-gradient(to bottom, #1e1e28, #161622);
+            border-bottom: 1px solid #2c2c2c;
         }
         
         /* BMW fonts are very specific and clean */
