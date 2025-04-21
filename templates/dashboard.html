@@ -93,21 +93,25 @@
             gap: 12px;
         }
         
-        /* Add a dedicated red arrow element instead of using ::after */
+        /* Red arrow indicator - just the tip outside the last tile */
         .red-arrow {
             position: absolute;
-            right: 15px;
+            right: 0;
             top: 50%;
             transform: translateY(-50%);
             color: #e63b3b; /* BMW red color */
-            font-size: 42px;
+            font-size: 26px;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(255,0,0,0.5);
+            text-shadow: 0 0 5px rgba(255,0,0,0.5);
             opacity: 0.9;
             pointer-events: none;
             animation: pulse 2s infinite;
             z-index: 100;
             display: block;
+            width: 15px;
+            overflow: hidden;
+            height: 30px;
+            line-height: 30px;
         }
         
         @keyframes pulse {
