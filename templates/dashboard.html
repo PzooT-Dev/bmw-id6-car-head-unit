@@ -295,16 +295,17 @@
         }
         
         /* Communication panel specifics - Like original BMW iD6 */
+        /* Communication panel styling to match BMW iD6 reference exactly */
         .comm-panel .date-display {
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
+            margin-top: 20px;
         }
 
         .comm-panel .date-number {
-            font-size: 48px;
-            font-weight: 500;
+            font-size: 96px;
+            font-weight: 300;
             margin-right: 15px;
             line-height: 1;
         }
@@ -312,89 +313,41 @@
         .comm-panel .date-text {
             display: flex;
             flex-direction: column;
-            font-size: 16px;
+            font-size: 18px;
+            color: #fff;
+            justify-content: center;
+        }
+
+        .comm-panel #date-month {
+            font-weight: 500;
+        }
+        
+        .comm-panel #date-year {
             color: #ccc;
+        }
+        
+        .comm-panel .comm-spacer {
+            flex: 1;
+            min-height: 50px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .comm-panel .device-info {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #333;
+            align-items: center;
+            padding-top: 10px;
         }
         
         .comm-panel .device-name {
             font-weight: 500;
+            font-size: 16px;
         }
         
         .comm-panel .battery {
             color: #aaa;
-        }
-        
-        .comm-panel .placeholder {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-        }
-        
-        .comm-panel .battery-level {
-            margin-left: 4px;
-            color: #ddd;
-            font-size: 13px;
-        }
-
-        .comm-panel .recent-calls {
-            margin-top: 20px;
-        }
-        
-        .comm-panel .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: #1c69d4;
-            margin-bottom: 12px;
-            letter-spacing: 0.5px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid rgba(28, 105, 212, 0.3);
-        }
-        
-        .comm-panel .call-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .comm-panel .call-item {
-            padding: 8px 10px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .comm-panel .call-name {
-            font-weight: 500;
-            font-size: 14px;
-        }
-        
-        .comm-panel .call-details {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            font-size: 12px;
-        }
-        
-        .comm-panel .call-time {
-            color: #aaa;
-        }
-        
-        .comm-panel .call-type {
-            color: #1c69d4;
-            font-size: 11px;
         }
         
         /* General style improvements for all panels to match BMW iD6 */
@@ -635,31 +588,14 @@
                             </div>
                         </div>
                         
+                        <!-- Empty space in the middle as per reference image -->
+                        <div class="comm-spacer"></div>
+
+                        <!-- Device info at bottom as per reference image -->
                         <div class="device-info">
-                            <div class="device-name">Pixel 7 Pro</div>
+                            <div class="device-name">HU-MGU</div>
                             <div class="battery">
                                 <span class="battery-icon">🔋</span>
-                                <span class="battery-level">85%</span>
-                            </div>
-                        </div>
-
-                        <div class="recent-calls">
-                            <div class="section-title">Recent Calls</div>
-                            <div class="call-list">
-                                <div class="call-item">
-                                    <div class="call-name">John Smith</div>
-                                    <div class="call-details">
-                                        <span class="call-time">Yesterday</span>
-                                        <span class="call-type">Incoming</span>
-                                    </div>
-                                </div>
-                                <div class="call-item">
-                                    <div class="call-name">Service Center</div>
-                                    <div class="call-details">
-                                        <span class="call-time">Apr 18</span>
-                                        <span class="call-type">Outgoing</span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
