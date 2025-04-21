@@ -88,6 +88,27 @@ function handleKeyNavigation(event) {
     }
 }
 
+// Date formatting function
+function updateDate() {
+    const now = new Date();
+    const day = now.getDate();
+    
+    // Get month name
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"];
+    const month = monthNames[now.getMonth()];
+    const year = now.getFullYear();
+    
+    // Update date display elements
+    const dayElement = document.getElementById('date-day');
+    const monthElement = document.getElementById('date-month');
+    const yearElement = document.getElementById('date-year');
+    
+    if (dayElement) dayElement.textContent = day;
+    if (monthElement) monthElement.textContent = month;
+    if (yearElement) yearElement.textContent = year;
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
     // Only start clock if no server connection after 2 seconds
@@ -110,10 +131,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set the first panel as selected by default
     if (panels.length > 0) {
         currentPanelIndex = 0; // Start with the first panel
+        selectPanel(currentPanelIndex);
     }
     
     // Add keyboard event listener for iDrive controller simulation
     document.addEventListener('keydown', handleKeyNavigation);
+    
+    // Update date for the Communication panel
+    updateDate();
     
     // Make API requests periodically to keep data fresh (if socket fails)
     setInterval(() => {
