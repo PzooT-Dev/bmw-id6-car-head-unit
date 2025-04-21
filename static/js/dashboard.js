@@ -86,10 +86,12 @@ function selectPanel(index) {
     panels[nextIndex].style.display = 'flex';
     panels[nextIndex].style.order = '3';
     
-    // Update red arrow visibility - show only if there are more than 3 panels
+    // Update red arrow visibility - hide on the last panel
     const redArrow = document.querySelector('.red-arrow');
     if (redArrow) {
-        redArrow.style.opacity = panels.length > 3 ? '1' : '0';
+        // Hide arrow on the last panel (Notifications)
+        const isLastPanel = currentPanelIndex === panels.length - 1;
+        redArrow.style.opacity = isLastPanel ? '0' : '1';
     }
 }
 
