@@ -43,11 +43,20 @@ const signalValue = document.querySelector('.signal-value');
 
 // Switch screen when navigation button is clicked
 navButtons.forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent default behavior
         const screenId = button.getAttribute('data-screen');
+        console.log('Switching to screen:', screenId);
+        
+        if (!screenId || !document.getElementById(screenId)) {
+            console.error('Invalid screen ID:', screenId);
+            return;
+        }
         
         // Deactivate all screens and buttons
-        screens.forEach(screen => screen.classList.remove('active'));
+        screens.forEach(screen => {
+            if (screen) screen.classList.remove('active');
+        });
         navButtons.forEach(btn => btn.classList.remove('active'));
         
         // Activate the selected screen and button
