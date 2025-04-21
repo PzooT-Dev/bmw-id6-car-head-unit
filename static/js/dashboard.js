@@ -65,26 +65,24 @@ function selectPanel(index) {
     currentPanelIndex = index;
     panels[currentPanelIndex].classList.add('selected');
     
-    // Hide all panels first
-    panels.forEach(panel => {
-        panel.style.display = 'none';
-        panel.style.order = 0; // Reset order
+    // Always show all panels in their natural order
+    // This creates a fixed list that doesn't reposition tiles
+    panels.forEach((panel, i) => {
+        // Reset all panels to their natural order
+        panel.style.order = i;
+        
+        // Show only 3 consecutive panels at a time
+        if (i >= currentPanelIndex && i < currentPanelIndex + 3) {
+            // Show panels from currentPanelIndex to currentPanelIndex+2
+            panel.style.display = 'flex';
+        } else if (currentPanelIndex > panels.length - 3 && i < (currentPanelIndex + 3) % panels.length) {
+            // Handle wrap-around case (when near the end of the list)
+            panel.style.display = 'flex';
+        } else {
+            // Hide other panels
+            panel.style.display = 'none';
+        }
     });
-    
-    // BMW iD6 shows 3 panels at a time with the selected one in the middle
-    // Show current panel and one on each side (or wrap around)
-    const prevIndex = (currentPanelIndex - 1 + panels.length) % panels.length;
-    const nextIndex = (currentPanelIndex + 1) % panels.length;
-    
-    // Show only these 3 panels and set their order for proper layout
-    panels[prevIndex].style.display = 'flex';
-    panels[prevIndex].style.order = '1';
-    
-    panels[currentPanelIndex].style.display = 'flex';
-    panels[currentPanelIndex].style.order = '2';
-    
-    panels[nextIndex].style.display = 'flex';
-    panels[nextIndex].style.order = '3';
     
     // Update red arrow visibility - hide on the last panel (Notifications)
     const redArrow = document.querySelector('.red-arrow');
