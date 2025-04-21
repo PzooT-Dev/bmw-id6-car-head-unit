@@ -387,26 +387,43 @@
             filter: brightness(1.1);
         }
         
-        /* Navigation panel specifics */
+        /* Android Auto panel specifics */
         .nav-panel .placeholder-map {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: #111;
+            background: linear-gradient(to bottom, #141414, #0a0a0a);
             border-radius: 8px;
             margin-top: 10px;
+            padding: 15px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
         
-        .nav-panel .map-icon {
-            font-size: 36px;
-            margin-bottom: 10px;
+        .nav-panel .android-auto-container {
+            position: relative;
+        }
+        
+        .nav-panel .android-auto-logo {
+            width: 90%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            filter: drop-shadow(0 4px 8px rgba(0,255,0,0.15));
+        }
+        
+        .nav-panel .aa-logo {
+            width: 100%;
+            max-width: 180px;
+            height: auto;
         }
         
         .nav-panel .map-text {
-            color: #aaa;
+            color: #bbb;
             text-align: center;
+            font-size: 14px;
+            margin-bottom: 6px;
         }
         
         /* ConnectedDrive panel specifics - with weather as the main feature */
@@ -584,16 +601,18 @@
                 </div>
             </div>
             
-            <!-- Navigation Panel -->
+            <!-- Android Auto Panel -->
             <div class="panel nav-panel">
                 <div class="panel-header">
-                    <div class="panel-title">🧭 Navigation</div>
+                    <div class="panel-title">🚗 Android Auto</div>
                 </div>
                 <div class="panel-content">
-                    <div class="placeholder-map">
-                        <div class="map-icon">🗺️</div>
-                        <div class="map-text">Navigation system ready</div>
-                        <div class="map-text">Tap to set destination</div>
+                    <div class="placeholder-map android-auto-container">
+                        <div class="android-auto-logo">
+                            <img src="https://www.android.com/static/2016/img/auto/logos/android-auto-dark.svg" alt="Android Auto Logo" class="aa-logo">
+                        </div>
+                        <div class="map-text">Android Auto Ready</div>
+                        <div class="map-text">Connect your device via USB</div>
                     </div>
                 </div>
             </div>
