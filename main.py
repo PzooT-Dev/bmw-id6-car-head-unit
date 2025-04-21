@@ -50,9 +50,10 @@ vehicle_data = {
 
 # Simulated radio data
 radio_data = {
-    'station_name': 'BMW Radio',
+    'station_name': 'Messy',
+    'artist': 'Lola Young',
     'frequency': '98.5 MHz',
-    'rds_text': 'Now playing: BMW iD6 Demo',
+    'rds_text': 'Now playing: Lola Young - Messy',
     'mode': 'FM',
     'signal_strength': 85,
     'is_playing': True
