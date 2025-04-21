@@ -101,22 +101,8 @@ function selectPanel(index) {
         }
     });
     
-    // Update red arrow visibility - hide on the last panel (Notifications)
-    const redArrow = document.querySelector('.red-arrow');
-    if (redArrow) {
-        // Get the last panel index (Notifications)
-        const lastPanelIndex = panels.length - 1;
-        
-        // Hide arrow completely when on the last panel
-        if (currentPanelIndex === lastPanelIndex) {
-            redArrow.style.display = 'none';
-        } else {
-            redArrow.style.display = 'block';
-            redArrow.style.opacity = '1';
-        }
-        
-        console.log("Current panel:", currentPanelIndex, "Last panel:", lastPanelIndex, "Arrow visible:", currentPanelIndex !== lastPanelIndex);
-    }
+    // Log panel information for debugging
+    console.log("Current panel:", currentPanelIndex, "Last panel:", panels.length - 1);
 }
 
 // Handle keyboard navigation to simulate the iDrive controller
