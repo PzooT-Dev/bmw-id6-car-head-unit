@@ -8,21 +8,16 @@ const timeElement = document.querySelector('.time');
 const weatherTempElement = document.querySelector('.weather-widget .temperature');
 const artistElement = document.querySelector('.artist');
 const trackElement = document.querySelector('.track');
-const sourceElement = document.querySelector('.source');
-const detailsElement = document.querySelector('.details');
+const sourceElement = document.querySelector('.source-text');
 const mpgElement = document.querySelector('.vehicle-panel .stat-row:nth-child(1) .stat-value');
 const avgSpeedElement = document.querySelector('.vehicle-panel .stat-row:nth-child(2) .stat-value');
 
 // Media player elements
-const playPauseBtn = document.querySelector('.media-btn.play-pause');
-const prevBtn = document.querySelector('.media-btn.previous');
-const nextBtn = document.querySelector('.media-btn.next');
 const progressBar = document.querySelector('.progress-fill');
 const currentTimeEl = document.querySelector('.current-time');
 const totalTimeEl = document.querySelector('.total-time');
 
 // Media player state
-let isPlaying = true;
 let currentTrack = 0;
 let currentProgress = 35; // Percentage
 
@@ -42,8 +37,7 @@ socket.on('vehicle_update', (data) => {
 socket.on('radio_update', (data) => {
     // Update radio data
     if (trackElement) trackElement.textContent = data.station_name;
-    if (sourceElement) sourceElement.textContent = `${data.mode} Radio`;
-    if (detailsElement) detailsElement.textContent = data.frequency;
+    if (sourceElement) sourceElement.textContent = `Bluetooth Audio`;
 });
 
 // Clock update function (as fallback)
@@ -122,42 +116,7 @@ function updateDate() {
     if (yearElement) yearElement.textContent = year;
 }
 
-// Media player functions
-function togglePlayPause() {
-    isPlaying = !isPlaying;
-    
-    if (isPlaying) {
-        playPauseBtn.textContent = '⏸';
-        // In a real app, this would start playing the audio
-        // Simulate progress updates
-        startProgressSimulation();
-    } else {
-        playPauseBtn.textContent = '▶';
-        // In a real app, this would pause the audio
-        stopProgressSimulation();
-    }
-    
-    // Send to server (in real implementation)
-    socket.emit('media_control', { action: isPlaying ? 'play' : 'pause' });
-}
-
-function prevTrack() {
-    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-    updateTrackInfo();
-    
-    // Reset progress
-    currentProgress = 0;
-    updateProgressBar();
-    
-    // If was paused, start playing
-    if (!isPlaying) {
-        togglePlayPause();
-    }
-    
-    // Send to server (in real implementation)
-    socket.emit('media_control', { action: 'prev' });
-}
-
+// Media player functions for automatic playback simulation
 function nextTrack() {
     currentTrack = (currentTrack + 1) % tracks.length;
     updateTrackInfo();
@@ -166,20 +125,15 @@ function nextTrack() {
     currentProgress = 0;
     updateProgressBar();
     
-    // If was paused, start playing
-    if (!isPlaying) {
-        togglePlayPause();
-    }
-    
     // Send to server (in real implementation)
     socket.emit('media_control', { action: 'next' });
 }
 
 // Sample tracks data (would come from server in real implementation)
 const tracks = [
-    { artist: 'Lazybox', title: 'Dreaming', duration: '3:45' },
-    { artist: 'Ambient Skies', title: 'Midnight Drive', duration: '4:22' },
-    { artist: 'Electric Pulse', title: 'City Lights', duration: '3:18' }
+    { artist: 'Lola Young', title: 'Messy', duration: '3:45' },
+    { artist: 'Lola Young', title: 'Woman', duration: '4:22' },
+    { artist: 'Lola Young', title: 'Pick Me Up', duration: '3:18' }
 ];
 
 function updateTrackInfo() {
@@ -271,27 +225,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update date for the Communication panel
     updateDate();
     
-    // Initialize media player controls
-    if (playPauseBtn) {
-        playPauseBtn.addEventListener('click', togglePlayPause);
-    }
-    
-    if (prevBtn) {
-        prevBtn.addEventListener('click', prevTrack);
-    }
-    
-    if (nextBtn) {
-        nextBtn.addEventListener('click', nextTrack);
-    }
-    
-    // Initialize the first track
+    // Initialize the track info
     updateTrackInfo();
     updateProgressBar();
     
-    // Start simulating playback if controls are available
-    if (playPauseBtn && isPlaying) {
-        startProgressSimulation();
-    }
+    // Start progress simulation
+    startProgressSimulation();
     
     // Make API requests periodically to keep data fresh (if socket fails)
     setInterval(() => {

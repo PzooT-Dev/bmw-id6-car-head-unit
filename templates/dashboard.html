@@ -155,30 +155,33 @@
         .media-panel .media-info {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 15px;
+            margin-top: 10px;
         }
         
         .media-panel .artist {
-            font-size: 14px;
-            color: #aaa;
+            font-size: 16px;
+            color: #ffffff;
+            font-weight: 500;
         }
         
         .media-panel .track {
-            font-size: 16px;
-            color: #fff;
+            font-size: 20px;
+            color: #ffffff;
+            font-weight: 600;
         }
         
         .media-panel .album-art {
             width: 100%;
-            height: 120px;
-            margin: 10px 0;
+            height: 160px;
+            margin: 15px 0;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border-radius: 4px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            border-radius: 0;
+            box-shadow: none;
         }
         
         .media-panel .album-cover {
@@ -187,39 +190,12 @@
             object-fit: cover;
         }
         
-        .media-panel .media-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin: 15px 0;
-        }
-        
-        .media-panel .media-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.2s;
-            padding: 5px;
-        }
-        
-        .media-panel .media-btn:hover {
-            transform: scale(1.1);
-            color: #1c69d4;
-        }
-        
-        .media-panel .media-btn.play-pause {
-            font-size: 32px;
-        }
-        
         .media-panel .progress-bar {
-            height: 4px;
-            background: #333;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
             position: relative;
-            margin: 0 0 15px 0;
-            border-radius: 2px;
+            margin: 0 0 5px 0;
+            border-radius: 0;
         }
         
         .media-panel .progress-fill {
@@ -227,36 +203,35 @@
             top: 0;
             left: 0;
             height: 100%;
-            background: #1c69d4;
-            border-radius: 2px;
+            background: #ffffff;
+            border-radius: 0;
         }
         
         .media-panel .progress-time {
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            color: #aaa;
+            color: #ffffff;
             margin-top: 5px;
+            margin-bottom: 15px;
         }
         
-        .media-panel .media-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #ff6d00; /* BMW iD6 CarPlay orange */
-            padding: 10px 15px;
+        .media-panel .media-source {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 10px;
+            margin-top: 15px;
         }
         
-        .media-panel .media-bar .source {
+        .media-panel .source-icon {
+            font-size: 18px;
+            color: #ffffff;
+        }
+        
+        .media-panel .source-text {
+            font-size: 15px;
             font-weight: 500;
-        }
-        
-        .media-panel .media-bar .details {
-            font-size: 12px;
+            color: #ffffff;
         }
         
         /* Communication panel specifics - Like original BMW iD6 */
@@ -522,16 +497,11 @@
                 </div>
                 <div class="panel-content">
                     <div class="media-info">
-                        <div class="artist">Lazybox</div>
-                        <div class="track">Dreaming</div>
+                        <div class="artist">Lola Young</div>
+                        <div class="track">Messy</div>
                     </div>
                     <div class="album-art">
-                        <img src="https://i.ibb.co/1TTm3D4/catch-album.jpg" alt="Album Cover" class="album-cover">
-                    </div>
-                    <div class="media-controls">
-                        <button class="media-btn previous">⏮</button>
-                        <button class="media-btn play-pause">⏸</button>
-                        <button class="media-btn next">⏭</button>
+                        <img src="https://i1.sndcdn.com/artworks-i4ZyK3ciy6MRV3Ps-VdMJ8Q-t500x500.jpg" alt="Album Cover" class="album-cover">
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: 35%;"></div>
@@ -540,9 +510,9 @@
                             <span class="total-time">3:45</span>
                         </div>
                     </div>
-                    <div class="media-bar">
-                        <span class="source">Media Player</span>
-                        <span class="details">Connected via Bluetooth</span>
+                    <div class="media-source">
+                        <span class="source-icon">🎧</span>
+                        <span class="source-text">Bluetooth Audio</span>
                     </div>
                 </div>
             </div>
