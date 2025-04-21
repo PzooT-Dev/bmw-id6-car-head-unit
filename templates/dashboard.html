@@ -50,7 +50,7 @@
             gap: 10px;
         }
         
-        /* Content area with horizontal scroll for panels */
+        /* Content area with horizontal scroll for panels - no visible scrollbar */
         .content {
             flex: 1;
             display: flex;
@@ -61,24 +61,15 @@
             gap: 6px;
             background: #000;
             white-space: nowrap;
-            scrollbar-width: thin;
-            scrollbar-color: #333 #111;
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
             max-height: 400px; /* Limit absolute height of tiles */
             height: 400px; /* Fixed height to match BMW iD6 */
         }
         
-        /* Scrollbar styling */
+        /* Hide scrollbar for Chrome, Safari and Opera */
         .content::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .content::-webkit-scrollbar-track {
-            background: #111;
-        }
-        
-        .content::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 4px;
+            display: none;
         }
         
         /* Panel styling */
@@ -94,6 +85,15 @@
             height: 370px;
             max-height: 370px;
             flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        
+        /* BMW iDrive selected tile style with red border */
+        .panel.selected {
+            border: 2px solid #e63b3b; /* BMW Red color for selected items */
+            box-shadow: 0 0 15px rgba(230, 59, 59, 0.4);
+            transform: scale(1.02);
+            z-index: 10;
         }
         
         .panel-header {
@@ -351,8 +351,8 @@
         
         <!-- Content Area with 6 Horizontally Scrollable Panels -->
         <div class="content">
-            <!-- Media/Radio Panel -->
-            <div class="panel media-panel">
+            <!-- Media/Radio Panel (selected by default) -->
+            <div class="panel media-panel selected">
                 <div class="panel-header">
                     <div class="panel-title">♫ Media/Radio</div>
                 </div>

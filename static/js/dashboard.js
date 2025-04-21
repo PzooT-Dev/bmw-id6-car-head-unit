@@ -42,6 +42,52 @@ function updateClock() {
     setTimeout(updateClock, 60000); // Update every minute
 }
 
+// iDrive controller simulation
+let currentPanelIndex = 0;
+const panels = [];
+
+function selectPanel(index) {
+    // Remove selected class from all panels
+    panels.forEach(panel => panel.classList.remove('selected'));
+    
+    // Ensure index is within bounds (wrap around at edges)
+    if (index < 0) index = panels.length - 1;
+    if (index >= panels.length) index = 0;
+    
+    // Select the new panel
+    currentPanelIndex = index;
+    panels[currentPanelIndex].classList.add('selected');
+    
+    // Scroll to the selected panel with smooth animation
+    panels[currentPanelIndex].scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'nearest',
+        inline: 'center'
+    });
+}
+
+// Handle keyboard navigation to simulate the iDrive controller
+function handleKeyNavigation(event) {
+    switch(event.key) {
+        case 'ArrowRight':
+            // Move selection to the right (clockwise on iDrive)
+            selectPanel(currentPanelIndex + 1);
+            event.preventDefault();
+            break;
+        case 'ArrowLeft':
+            // Move selection to the left (counter-clockwise on iDrive)
+            selectPanel(currentPanelIndex - 1);
+            event.preventDefault();
+            break;
+        case 'Enter':
+            // Simulate pressing the iDrive controller to select
+            console.log('Selected panel:', panels[currentPanelIndex]);
+            // Additional action code would go here
+            event.preventDefault();
+            break;
+    }
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
     // Only start clock if no server connection after 2 seconds
@@ -55,6 +101,19 @@ document.addEventListener('DOMContentLoaded', function() {
     socket.on('connect', () => {
         clearTimeout(clockTimer);
     });
+    
+    // Initialize the panels array
+    document.querySelectorAll('.panel').forEach(panel => {
+        panels.push(panel);
+    });
+    
+    // Set the first panel as selected by default
+    if (panels.length > 0) {
+        currentPanelIndex = 0; // Start with the first panel
+    }
+    
+    // Add keyboard event listener for iDrive controller simulation
+    document.addEventListener('keydown', handleKeyNavigation);
     
     // Make API requests periodically to keep data fresh (if socket fails)
     setInterval(() => {
