@@ -5,13 +5,13 @@ const socket = io();
 
 // DOM elements
 const timeElement = document.querySelector('.time');
-const temperatureElement = document.querySelector('.temperature');
+const weatherTempElement = document.querySelector('.weather-widget .temperature');
 const artistElement = document.querySelector('.artist');
 const trackElement = document.querySelector('.track');
 const sourceElement = document.querySelector('.source');
 const detailsElement = document.querySelector('.details');
-const fuelElement = document.querySelector('.vehicle-panel .stat-row:nth-child(1) .stat-value');
-const tempElement = document.querySelector('.vehicle-panel .stat-row:nth-child(2) .stat-value');
+const mpgElement = document.querySelector('.vehicle-panel .stat-row:nth-child(1) .stat-value');
+const avgSpeedElement = document.querySelector('.vehicle-panel .stat-row:nth-child(2) .stat-value');
 
 // Socket.IO event handlers
 socket.on('connect', () => {
@@ -20,9 +20,9 @@ socket.on('connect', () => {
 
 socket.on('vehicle_update', (data) => {
     // Update vehicle data
-    if (fuelElement) fuelElement.textContent = `${data.fuel_level}%`;
-    if (tempElement) tempElement.textContent = `${data.coolant_temp}°C`;
-    if (temperatureElement) temperatureElement.textContent = `${data.outside_temp}°C`;
+    if (mpgElement) mpgElement.textContent = `${data.avg_mpg} mpg`;
+    if (avgSpeedElement) avgSpeedElement.textContent = `${data.avg_speed} mph`;
+    if (weatherTempElement) weatherTempElement.textContent = `${data.outside_temp}°C`;
     if (timeElement && data.time) timeElement.textContent = data.time;
 });
 
@@ -63,9 +63,9 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch('/api/vehicle-data')
                 .then(response => response.json())
                 .then(data => {
-                    if (fuelElement) fuelElement.textContent = `${data.fuel_level}%`;
-                    if (tempElement) tempElement.textContent = `${data.coolant_temp}°C`;
-                    if (temperatureElement) temperatureElement.textContent = `${data.outside_temp}°C`;
+                    if (mpgElement) mpgElement.textContent = `${data.avg_mpg} mpg`;
+                    if (avgSpeedElement) avgSpeedElement.textContent = `${data.avg_speed} mph`;
+                    if (weatherTempElement) weatherTempElement.textContent = `${data.outside_temp}°C`;
                     if (timeElement && data.time) timeElement.textContent = data.time;
                 })
                 .catch(error => console.error('Error fetching vehicle data:', error));

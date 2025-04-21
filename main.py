@@ -37,7 +37,9 @@ vehicle_data = {
     'rpm': 0,
     'fuel_level': 75,
     'coolant_temp': 90,
-    'outside_temp': 22
+    'outside_temp': 22,
+    'avg_mpg': 32.5,
+    'avg_speed': 45
 }
 
 # Simulated radio data
@@ -88,6 +90,10 @@ def update_simulated_data():
         vehicle_data['speed'] = max(0, min(120, vehicle_data['speed'] + random.randint(-5, 5)))
         vehicle_data['rpm'] = max(0, min(5000, vehicle_data['rpm'] + random.randint(-100, 100)))
         vehicle_data['outside_temp'] = round(max(0, min(35, vehicle_data['outside_temp'] + random.random() * 0.2 - 0.1)), 1)
+        
+        # Simulate slow changes to MPG and average speed
+        vehicle_data['avg_mpg'] = round(max(20, min(45, vehicle_data['avg_mpg'] + random.random() * 0.4 - 0.2)), 1)
+        vehicle_data['avg_speed'] = round(max(25, min(70, vehicle_data['avg_speed'] + random.random() * 0.6 - 0.3)), 1)
         
         # Emit updates
         socketio.emit('vehicle_update', vehicle_data)
